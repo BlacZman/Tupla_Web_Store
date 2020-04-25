@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Tupla_Web_Store.AllData.customerData;
 
 namespace Tupla_Web_Store
 {
@@ -23,6 +24,7 @@ namespace Tupla_Web_Store
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<ICustomer, InMemomryTest>();
             services.AddRazorPages();
         }
 

@@ -1,0 +1,63 @@
+﻿@page
+@model Tupla_Web_Store.Pages.User.CreateModel
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Creating new account</h1>
+<form method="post">
+    <div class="form-group">
+        <label asp-for="User.Username"></label>
+        <input asp-for="User.Username" class="form-control" />
+        <span class="text-danger" asp-validation-for="User.Username"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="User.Password"></label>
+        <input asp-for="User.Password" type="password" class="form-control" />
+        <span class="text-danger" asp-validation-for="User.Password"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="User.First_name"></label>
+        <input asp-for="User.First_name" class="form-control" />
+        <span class="text-danger" asp-validation-for="User.First_name"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="User.Last_name"></label>
+        <input asp-for="User.Last_name" class="form-control" />
+        <span class="text-danger" asp-validation-for="User.Last_name"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="User.Email"></label>
+        <input asp-for="User.Email" class="form-control" />
+        <span class="text-danger" asp-validation-for="User.Email"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="User.Telephone"></label>
+        <input asp-for="User.Telephone" class="form-control" />
+        <span class="text-danger" asp-validation-for="User.Telephone"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="User.Gender"></label>
+        <select class="form-control" asp-for="User.Gender" asp-items="@Model.Genders">
+        </select>
+        <span class="text-danger" asp-validation-for="User.Gender"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="User.Address"></label>
+        <input asp-for="User.Address" class="form-control" />
+        <span class="text-danger" asp-validation-for="User.Address"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="User.Zipcode"></label>
+        <input asp-for="User.Zipcode" class="form-control" />
+        <span class="text-danger" asp-validation-for="User.Zipcode"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="User.Country"></label>
+        <input asp-for="User.Country" class="form-control" />
+        <span class="text-danger" asp-validation-for="User.Country"></span>
+    </div>
+
+    <button type="submit" class="btn btn-dark">Save</button>
+</form>
+
