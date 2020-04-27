@@ -1,4 +1,4 @@
-﻿namespace Tupla_Web_Store.AllData.customerData
+﻿namespace Tupla.Data.Core.CustomerData
 {
     public enum Gender
     {

@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tupla_Web_Store", "Tupla_Web_Store\Tupla_Web_Store.csproj", "{130E1A9F-1CD1-4A06-9401-EF6B4A67D2C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tupla_Web_Store", "Tupla_Web_Store\Tupla_Web_Store.csproj", "{130E1A9F-1CD1-4A06-9401-EF6B4A67D2C6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tupla.Data.Core", "Tupla.Data.Core\Tupla.Data.Core.csproj", "{AF77DE36-E948-4295-9B2E-C14F88D9FEBF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tupla.Data.Context", "Tupla.Data.Context\Tupla.Data.Context.csproj", "{1EF94122-6E6F-40D8-B473-E552F43634B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{130E1A9F-1CD1-4A06-9401-EF6B4A67D2C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{130E1A9F-1CD1-4A06-9401-EF6B4A67D2C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{130E1A9F-1CD1-4A06-9401-EF6B4A67D2C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF77DE36-E948-4295-9B2E-C14F88D9FEBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF77DE36-E948-4295-9B2E-C14F88D9FEBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF77DE36-E948-4295-9B2E-C14F88D9FEBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF77DE36-E948-4295-9B2E-C14F88D9FEBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EF94122-6E6F-40D8-B473-E552F43634B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EF94122-6E6F-40D8-B473-E552F43634B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EF94122-6E6F-40D8-B473-E552F43634B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EF94122-6E6F-40D8-B473-E552F43634B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
