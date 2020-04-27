@@ -20,16 +20,16 @@
 <table class="table">
     @foreach (var customer in Model.Customers)
     {
-        <tr>
-            <td>@customer.Username</td>
-            <td>@customer.Email</td>
-            <td>@customer.CompanyID</td>
-            <td>
+        <tr class="row">
+            <td class="col-sm-4">@customer.Username</td>
+            <td class="col-sm-5">@customer.Email</td>
+            <td class="col-sm-1">@customer.CompanyID</td>
+            <td class="col-sm-1">
                 <a class="btn btn-lg" asp-page="./User/u" asp-route-Username="@customer.Username">
                     <i class="fas fa-search-plus"></i>
                 </a>
             </td>
-            <td>
+            <td class="col-sm-1">
                 <a class="btn btn-lg" asp-page="./User/Edit" asp-route-Username="@customer.Username">
                     <i class="fas fa-edit"></i>
                 </a>

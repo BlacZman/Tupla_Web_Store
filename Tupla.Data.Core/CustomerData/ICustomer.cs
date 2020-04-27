@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Tupla_Web_Store.AllData.customerData
+namespace Tupla.Data.Core.CustomerData
 {
     public interface ICustomer
     {

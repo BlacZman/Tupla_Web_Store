@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Tupla.Data.Core.CustomerData;
 
-namespace Tupla_Web_Store.AllData.customerData
+namespace Tupla.Data.Context
 {
-    public class InMemomryTest : ICustomer
+    public class InMemoryTest : ICustomer
     {
         readonly List<Customer> Customers;
-        public InMemomryTest()
+        public InMemoryTest()
         {
             Customers = new List<Customer>()
             {
@@ -51,7 +51,7 @@ namespace Tupla_Web_Store.AllData.customerData
         public Customer Update(Customer newCustomer)
         {
             var customer = Customers.SingleOrDefault(r => r.Username == newCustomer.Username);
-            if(customer != null)
+            if (customer != null)
             {
                 customer.First_name = newCustomer.First_name;
                 customer.Last_name = newCustomer.Last_name;

@@ -8,4 +8,9 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Tupla.Data.Context\Tupla.Data.Context.csproj" />
+    <ProjectReference Include="..\Tupla.Data.Core\Tupla.Data.Core.csproj" />
+  </ItemGroup>
+
 </Project>

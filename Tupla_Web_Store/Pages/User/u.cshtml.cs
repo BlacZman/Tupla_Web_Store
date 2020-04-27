@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
-using Tupla_Web_Store.AllData.customerData;
+using Tupla.Data.Core.CustomerData;
 
 namespace Tupla_Web_Store.Pages.User
 {
