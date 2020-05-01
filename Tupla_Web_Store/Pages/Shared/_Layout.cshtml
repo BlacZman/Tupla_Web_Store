@@ -3,16 +3,19 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Tupla Web Store</title>
+    <title>@ViewData["Title"] - CODE GAME STORE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Mitr&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/_Layout.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <script src="https://kit.fontawesome.com/ba8c526c07.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">Tupla Web Store</a>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-custom-navbar border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="bg-logo" asp-area="" asp-page="/Index">
+                </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -21,10 +24,10 @@
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-page="/Customers">Customers</a>
+                            <a class="nav-link text-dark mitr-font" asp-area="" asp-page="/Error"><span class="fas fa-gem"></span> ร้านค้า</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                            <a class="nav-link text-dark mitr-font" asp-area="" asp-page="/Privacy"><span class="fas fa-archive"></span> คลัง</a>
                         </li>
                     </ul>
                 </div>
@@ -37,8 +40,8 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
+    <footer class="border-top footer text-center">
+        <div class="container-fluid">
             &copy; 2563 - Tupla Web Store - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
     </footer>
