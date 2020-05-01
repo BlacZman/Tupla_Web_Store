@@ -6,3 +6,4 @@ How to run these thing?!
 - Open 'Package Manager Console'
 - In command-line, type 'Add-Migration [name]' (replace [name] with your desire name)
 - Finally, In command-line, type 'Update-Database'
+- Run the web server by pressing F5 or CTRL +  F5
