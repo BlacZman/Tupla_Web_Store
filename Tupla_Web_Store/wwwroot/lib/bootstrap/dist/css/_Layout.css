@@ -25,3 +25,9 @@ body {
 .mitr-font {
     font-family: 'Mitr', sans-serif;
 }
+
+.body-bg {
+    background-color: #dbfffe;
+    width: 100%;
+    height: 100%;
+}
