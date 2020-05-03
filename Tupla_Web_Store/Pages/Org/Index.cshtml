@@ -1,0 +1,98 @@
+﻿@page
+@model Tupla_Web_Store.Pages.Org.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+@if (Model.CompanyStatus != null)
+{
+    <div class="alert alert-info">@Model.CompanyStatus</div>
+}
+<div class="row">
+    <div class="col-sm-8">
+        <h2>Your published games</h2>
+        <hr />
+        @if (Model.Game.Any())
+        {
+            foreach (var item in Model.Game)
+            {
+                <div class="row navbar">
+                    <div class="col-sm-2">
+
+                    </div>
+                    <div class="col-sm-5">
+                        @item.GameName
+                    </div>
+                    <div class="col-sm-1">
+                        @item.Price
+                    </div>
+                    <div class="col-sm-2">
+                        <a class="btn btn-secondary">Discount</a>
+                    </div>
+                    <div class="col-sm-1">
+                        <a class="btn btn-primary">Edit</a>
+                    </div>
+                    <div class="col-sm-1">
+                        <a class="btn btn-danger">Delete</a>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p class="col-sm-12">There is none.</p>
+        }
+
+        <div class="flex-grow-1">
+            <a class="btn btn-success col-sm-12" asp-page="./Addgame">
+                <i class="fas fa-plus"></i>
+            </a>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <h2>@Html.DisplayFor(model => model.Company.company_name)</h2>
+        <hr />
+        <h4>Details</h4>
+        <dl class="row">
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Company.company_address)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Company.company_address)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Company.bank_name)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Company.bank_name)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Company.bank_account)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Company.bank_account)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Company.company_country)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Company.company_country)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Company.company_zipcode)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Company.company_zipcode)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Company.company_create_date)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Company.company_create_date)
+            </dd>
+        </dl>
+        <a class="col-sm-12 btn btn-outline-info" asp-page="./Edit">Edit</a>
+    </div>
+</div>
+

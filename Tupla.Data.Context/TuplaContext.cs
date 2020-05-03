@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Tupla.Data.Core.CompanyData;
 using Tupla.Data.Core.CustomerData;
+using Tupla.Data.Core.GameData;
 
 namespace Tupla.Data.Context
 {
@@ -12,6 +14,8 @@ namespace Tupla.Data.Context
         {
 
         }
+        public DbSet<Company> Company { get; set; }
+        public DbSet<Game> Game { get; set; }
     }
 
 }
