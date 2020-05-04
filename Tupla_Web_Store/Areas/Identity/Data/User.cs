@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Tupla.Data.Core.CompanyData;
 using Tupla.Data.Core.CustomerData;
 
 namespace Tupla_Web_Store.Areas.Identity.Data
@@ -25,7 +27,9 @@ namespace Tupla_Web_Store.Areas.Identity.Data
         public string Zipcode { get; set; }
         [PersonalData]
         public string Country { get; set; }
-        public int CompanyID { get; set; }
+        [ForeignKey("Company")]
+        public int? CompanyID { get; set; } = null;
+        public Company Company { get; set; }
         [PersonalData]
         public DateTime UserCreateDate { get; set; }
     }

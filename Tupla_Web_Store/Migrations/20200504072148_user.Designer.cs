@@ -10,8 +10,8 @@ using Tupla.Login;
 namespace Tupla_Web_Store.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200501115037_test1")]
-    partial class test1
+    [Migration("20200504072148_user")]
+    partial class user
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -156,6 +156,51 @@ namespace Tupla_Web_Store.Migrations
                     b.ToTable("UserTokens");
                 });
 
+            modelBuilder.Entity("Tupla.Data.Core.CompanyData.Company", b =>
+                {
+                    b.Property<int>("companyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("bank_account")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(25)")
+                        .HasMaxLength(25);
+
+                    b.Property<string>("bank_name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("company_address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("company_country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
+                    b.Property<DateTime>("company_create_date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("company_name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("company_zipcode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.HasKey("companyId");
+
+                    b.ToTable("Company");
+                });
+
             modelBuilder.Entity("Tupla_Web_Store.Areas.Identity.Data.User", b =>
                 {
                     b.Property<string>("Id")
@@ -167,7 +212,7 @@ namespace Tupla_Web_Store.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CompanyID")
+                    b.Property<int?>("CompanyID")
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -237,6 +282,8 @@ namespace Tupla_Web_Store.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CompanyID");
+
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
 
@@ -297,6 +344,13 @@ namespace Tupla_Web_Store.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Tupla_Web_Store.Areas.Identity.Data.User", b =>
+                {
+                    b.HasOne("Tupla.Data.Core.CompanyData.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyID");
                 });
 #pragma warning restore 612, 618
         }
