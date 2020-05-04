@@ -20,10 +20,12 @@ namespace Tupla_Web_Store.Pages.g
         }
 
         public IEnumerable<Game> Game { get; private set; }
+        [BindProperty(SupportsGet = true)]
+        public string search { get; set; }
 
         public void OnGet()
         {
-            Game = db.GetGamesByName("");
+            Game = db.GetGamesByName(search);
         }
     }
 }
