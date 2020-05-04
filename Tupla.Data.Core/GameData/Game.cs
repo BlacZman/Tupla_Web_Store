@@ -18,12 +18,12 @@ namespace Tupla.Data.Core.GameData
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 3)]
         public string GameName { get; set; }
         [Required]
-        [DataType(DataType.Text)]
+        [DataType(DataType.MultilineText)]
         [StringLength(255, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 3)]
         public string Description { get; set; }
         [Required]
         [Display(Name = "Html text")]
-        [DataType(DataType.Text)]
+        [DataType(DataType.MultilineText)]
         public string HtmlText { get; set; }
         [Required]
         [DataType(DataType.Currency)]

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -27,7 +28,7 @@ namespace Tupla_Web_Store.Pages.Org
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToPage("../NotFound");
             }
 
             Game = await _context.Game
@@ -37,7 +38,7 @@ namespace Tupla_Web_Store.Pages.Org
             {
                 return NotFound();
             }
-           ViewData["CompanyID"] = new SelectList(_context.Company, "companyId", "bank_account");
+            Game.HtmlText = HttpUtility.HtmlDecode(Game.HtmlText);
             return Page();
         }
 
@@ -49,12 +50,14 @@ namespace Tupla_Web_Store.Pages.Org
             {
                 return Page();
             }
-
+            Game.HtmlText = HttpUtility.HtmlEncode(Game.HtmlText);
+            Game.Price = Math.Round(Game.Price, 2, MidpointRounding.ToEven);
             _context.Attach(Game).State = EntityState.Modified;
 
             try
             {
                 await _context.SaveChangesAsync();
+                TempData["CompanyStatus"] = "Your game has been updated!";
             }
             catch (DbUpdateConcurrencyException)
             {
