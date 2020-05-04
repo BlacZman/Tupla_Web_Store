@@ -6,11 +6,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Tupla.Data.Context;
+using Tupla.Data.Core.CompanyData;
 using Tupla.Data.Core.CustomerData;
+using Tupla.Data.Core.GameData;
 
 namespace Tupla_Web_Store
 {
@@ -26,7 +29,12 @@ namespace Tupla_Web_Store
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<ICustomer, InMemoryTest>();
+            services.AddDbContextPool<TuplaContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("DataContextConnection"));
+            });
+            services.AddScoped<ICompany, SqlCompanyData>();
+            services.AddScoped<IGame, SqlGameData>();
             services.AddRazorPages();
 
             services.Configure<IdentityOptions>(options =>

@@ -1,3 +1,4 @@
-﻿Support for ASP.NET Core Identity was added to your project.
-
-For setup and configuration information, see https://go.microsoft.com/fwlink/?linkid=2116645.
+﻿Default projects: Tupla_Web_Store
+EntityFrameworkCore\Update-Database -Context DataContext
+Default projects: Tupla.Data.Context
+EntityFrameworkCore\Update-Database -Context TuplaContext
