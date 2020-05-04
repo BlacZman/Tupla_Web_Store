@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Tupla.Data.Context.Migrations
 {
-    public partial class tuplaGame : Migration
+    public partial class game : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -18,7 +18,7 @@ namespace Tupla.Data.Context.Migrations
                     HtmlText = table.Column<string>(nullable: false),
                     Price = table.Column<decimal>(nullable: false),
                     ReleaseDate = table.Column<DateTime>(nullable: false),
-                    CompanyID = table.Column<int>(nullable: true)
+                    CompanyID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

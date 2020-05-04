@@ -28,7 +28,7 @@ namespace Tupla_Web_Store.Areas.Identity.Data
         [PersonalData]
         public string Country { get; set; }
         [ForeignKey("Company")]
-        public int? CompanyID { get; set; }
+        public int? CompanyID { get; set; } = null;
         public Company Company { get; set; }
         [PersonalData]
         public DateTime UserCreateDate { get; set; }

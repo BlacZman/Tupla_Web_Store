@@ -10,8 +10,8 @@ using Tupla.Data.Context;
 namespace Tupla.Data.Context.Migrations
 {
     [DbContext(typeof(TuplaContext))]
-    [Migration("20200503163311_tuplaGame")]
-    partial class tuplaGame
+    [Migration("20200504071820_game")]
+    partial class game
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -73,7 +73,7 @@ namespace Tupla.Data.Context.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CompanyID")
+                    b.Property<int>("CompanyID")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -107,7 +107,9 @@ namespace Tupla.Data.Context.Migrations
                 {
                     b.HasOne("Tupla.Data.Core.CompanyData.Company", "Company")
                         .WithMany()
-                        .HasForeignKey("CompanyID");
+                        .HasForeignKey("CompanyID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
