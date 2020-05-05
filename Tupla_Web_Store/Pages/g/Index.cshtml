@@ -19,21 +19,23 @@
         </div>
     </div>
 </form>
-<table class="table">
-@foreach (var item in Model.Game) {
-    <tr>
-        <td>
+@foreach (var item in Model.Game)
+{
+    <a class="row btn-outline-dark" asp-page="./Detail" asp-route-id="@item.GameId">
+        <div class="col-xl-2">
+            <!--Image 16:9 192px * 108px-->
+        </div>
+        <div class="col-xl-5 my-auto">
             @Html.DisplayFor(modelItem => item.GameName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
+        </div>
+        <div class="col-xl-2 my-auto">
             @Html.DisplayFor(modelItem => item.ReleaseDate)
-        </td>
-        <td>
+        </div>
+        <div class="col-xl-3 btn-group my-auto">
+            <!--Manipulate price-->
+            -%<!--Discount in here-->
             @Html.DisplayFor(modelItem => item.Price)
-        </td>
-    </tr>
+        </div>
+        <hr/>
+    </a>
 }
-</table>

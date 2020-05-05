@@ -1,0 +1,50 @@
+﻿@page "{id:int?}"
+@model Tupla_Web_Store.Pages.g.DetailModel
+
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<div>
+    <h1>@Html.DisplayFor(model => model.Game.GameName)</h1>
+    <hr />
+    <div class="row">
+        <div class="col-xl-8">
+            <!--Video and image-->
+        </div>
+        <div class="col-xl-4 card">
+            <div class="card-img-top">
+                <!--Image icon-->
+            </div>
+            <div class="card-body">
+                <div class="card-text">
+                    @Html.DisplayFor(model => model.Game.Description)
+                </div>
+                <dl class="card-text">
+                    <dt>@Html.DisplayNameFor(model => model.Game.ReleaseDate)</dt>
+                    <dd>@Html.DisplayFor(model => model.Game.ReleaseDate)</dd>
+                </dl>
+                <div class="col-lg-12 btn-group">
+                    <div class="btn btn-dark">
+                        @Html.DisplayFor(model => model.Game.Price)
+                    </div>
+                    <a class="btn btn-success">
+                        Add to basket
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-8">
+            @Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.Game.HtmlText))
+        </div>
+        <div class="col-xl-4">
+
+        </div>
+    </div>
+</div>
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>

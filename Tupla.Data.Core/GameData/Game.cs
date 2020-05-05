@@ -32,6 +32,7 @@ namespace Tupla.Data.Core.GameData
         [Required]
         [Display(Name = "Release date")]
         [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:D}")]
         public DateTime ReleaseDate { get; set; }
         [Required]
         [ForeignKey("Company")]

@@ -1,6 +1,6 @@
 ﻿@page
 @model Tupla_Web_Store.Pages.Org.IndexModel
-
+@using System.Globalization
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Pages/Shared/_Layout.cshtml";
@@ -10,7 +10,7 @@
     <div class="alert alert-info">@Model.CompanyStatus</div>
 }
 <div class="row">
-    <div class="col-xl-8">
+    <div class="col-xl-9">
         <h2>Your published games</h2>
         <hr />
         @if (Model.Game.Any())
@@ -22,21 +22,17 @@
 
                     </div>
                     <div class="col-xl-4 my-auto">
-                        @item.GameName
+                        @Html.DisplayFor(modelItem => item.GameName)
                     </div>
                     <div class="col-xl-2 btn-group my-auto">
                         <!--Manipulate price-->
-                        <div class="col-xl-4 btn">
-                            <!--Discount in here-->
-                        </div>
-                        <div class="col-xl-8 btn">
-                            ฿@item.Price
-                        </div>
+                        -%<!--Discount in here-->
+                        @Html.DisplayFor(modelItem => item.Price)
                     </div>
                     <div class="btn-group col-xl-4  my-auto">
                         <a class="btn btn-secondary">Discount</a>
                         <a class="btn btn-primary" asp-page="./Editgame" asp-route-id="@item.GameId">Edit</a>
-                        <a class="btn btn-danger">Delete</a>
+                        <a class="btn btn-danger" asp-page="./Deletegame" asp-route-id="@item.GameId">Delete</a>
                     </div>
                 </div>
             }
@@ -52,7 +48,7 @@
             </a>
         </div>
     </div>
-    <div class="col-xl-4">
+    <div class="col-xl-3">
         <h2>@Html.DisplayFor(model => model.Company.company_name)</h2>
         <hr />
         <h4>Details</h4>

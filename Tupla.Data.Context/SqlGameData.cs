@@ -24,12 +24,26 @@ namespace Tupla.Data.Context
 
         public int Commit()
         {
-            return db.SaveChanges();
+            try
+            {
+                return db.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
         }
 
         public async Task<int> CommitAsync()
         {
-            return await db.SaveChangesAsync();
+            try
+            {
+                return await db.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
         }
 
         public void Delete(Game deleteGame)
@@ -45,6 +59,16 @@ namespace Tupla.Data.Context
         public async Task<Game> GetByIdAsync(int? id)
         {
             return await db.Game.FirstOrDefaultAsync(r => r.GameId == id);
+        }
+
+        public Game GetByIdAuthorize(int? id, int companyId)
+        {
+            return db.Game.FirstOrDefault(r => r.GameId == id && r.CompanyID == companyId);
+        }
+
+        public async Task<Game> GetByIdAuthorizeAsync(int? id, int companyId)
+        {
+            return await db.Game.FirstOrDefaultAsync(r => r.GameId == id && r.CompanyID == companyId);
         }
 
         public IEnumerable<Game> GetGamesByCompanyId(int id)
