@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Tupla.Data.Context;
 using Tupla.Data.Core.GameData;
+using Tupla.Data.Core.PictureData;
 
 namespace Tupla_Web_Store.Pages.Org
 {
@@ -18,24 +22,45 @@ namespace Tupla_Web_Store.Pages.Org
     {
         private readonly UserManager<Areas.Identity.Data.User> userManager;
         private readonly IGame db;
+        private readonly IGamePicture picdb;
+        private readonly IWebHostEnvironment env;
+
+        private GamePicture GamePicInfo { get; set; }
 
         public AddgameModel(UserManager<Areas.Identity.Data.User> userManager, 
-            IGame db)
+            IGame db,
+            IGamePicture picdb,
+            IWebHostEnvironment env)
         {
             this.userManager = userManager;
             this.db = db;
+            this.picdb = picdb;
+            this.env = env;
         }
 
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await userManager.GetUserAsync(User);
-            var companyId = user.CompanyID;
+            int? companyId = null;
+            await Task.Run(() =>
+            {
+                companyId = user.CompanyID;
+            });
             if (companyId == null) return RedirectToPage("./Create");
-            else return Page();
+            else
+            {
+                await Task.Run(() =>
+                {
+                    imgDisplay = "~/img/notfound.jpg";
+                });
+                return Page();
+            }
         }
 
         [BindProperty]
         public Game Game { get; set; }
+        public IFormFile Imgfile { get; set; }
+        public string imgDisplay { get; set; }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
@@ -45,16 +70,41 @@ namespace Tupla_Web_Store.Pages.Org
             {
                 return Page();
             }
+            
             var user = await userManager.GetUserAsync(User);
-            var companyId = user.CompanyID;
-            Game.CompanyID = (int)companyId;
-            Game.HtmlText = HttpUtility.HtmlEncode(Game.HtmlText);
-            Game.Price = Math.Round(Game.Price, 2, MidpointRounding.ToEven);
-            Game.ReleaseDate = DateTime.Now;
-
+            await Task.Run(() =>
+            {
+                var companyId = user.CompanyID;
+                Game.CompanyID = (int)companyId;
+                Game.HtmlText = HttpUtility.HtmlEncode(Game.HtmlText);
+                Game.Price = Math.Round(Game.Price, 2, MidpointRounding.ToEven);
+                Game.ReleaseDate = DateTime.Now;
+            });
             db.Add(Game);
             await db.CommitAsync();
-
+            
+            //Image uploading
+            if (Imgfile != null)
+            {
+                GamePicInfo = GamePicInfo == null ? new GamePicture() : GamePicInfo;
+                //Upload to file system
+                string uploadsFolder = Path.Combine(env.WebRootPath, "img");
+                string uniqueFileName = Path.Combine("g", Guid.NewGuid().ToString() + "_" + Imgfile.FileName);
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                //Update database
+                await Task.Run(() =>
+                {
+                    GamePicInfo.Path = uniqueFileName;
+                    GamePicInfo.imageType = ImageType.Icon;
+                    GamePicInfo.GameId = Game.GameId;
+                });
+                picdb.AddIcon(GamePicInfo);
+                await picdb.CommitAsync();
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await Imgfile.CopyToAsync(fileStream);
+                }
+            }
             return RedirectToPage("../g/Index");
         }
     }

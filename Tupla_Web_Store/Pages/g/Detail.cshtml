@@ -10,12 +10,14 @@
     <h1>@Html.DisplayFor(model => model.Game.GameName)</h1>
     <hr />
     <div class="row">
-        <div class="col-xl-8">
+        <div class="col-md-8">
             <!--Video and image-->
         </div>
-        <div class="col-xl-4 card">
+        <div class="col-md-4 card">
             <div class="card-img-top">
                 <!--Image icon-->
+                <img class="img-fluid" src="@Model.imgDisplay" asp-append-version="true"
+                     style="width:100%;height:200px"/>
             </div>
             <div class="card-body">
                 <div class="card-text">
@@ -25,6 +27,13 @@
                     <dt>@Html.DisplayNameFor(model => model.Game.ReleaseDate)</dt>
                     <dd>@Html.DisplayFor(model => model.Game.ReleaseDate)</dd>
                 </dl>
+                <div>
+                    <!--tag here-->
+                    <button type="button" class="btn-dark rounded" data-toggle="modal" data-target="#Modal">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <br />
                 <div class="col-lg-12 btn-group">
                     <div class="btn btn-dark">
                         @Html.DisplayFor(model => model.Game.Price)
@@ -47,4 +56,24 @@
 </div>
 <div>
     <a asp-page="./Index">Back to List</a>
+</div>
+
+<div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">Edit tag</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
 </div>

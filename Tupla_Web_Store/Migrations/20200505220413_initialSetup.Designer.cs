@@ -10,8 +10,8 @@ using Tupla.Login;
 namespace Tupla_Web_Store.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200504072148_user")]
-    partial class user
+    [Migration("20200505220413_initialSetup")]
+    partial class initialSetup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

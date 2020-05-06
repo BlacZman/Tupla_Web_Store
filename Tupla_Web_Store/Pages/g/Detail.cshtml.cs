@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Tupla.Data.Context;
 using Tupla.Data.Core.GameData;
+using Tupla.Data.Core.PictureData;
 
 namespace Tupla_Web_Store.Pages.g
 {
@@ -15,13 +16,17 @@ namespace Tupla_Web_Store.Pages.g
     public class DetailModel : PageModel
     {
         private readonly IGame db;
+        private readonly IGamePicture picdb;
 
-        public DetailModel(IGame db)
+        public DetailModel(IGame db,
+            IGamePicture picdb)
         {
             this.db = db;
+            this.picdb = picdb;
         }
 
         public Game Game { get; set; }
+        public string imgDisplay { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -36,6 +41,11 @@ namespace Tupla_Web_Store.Pages.g
             {
                 return RedirectToPage("../NotFound");
             }
+            await Task.Run(() =>
+            {
+                var GamePicInfo = picdb.GetIconById(Game.GameId);
+                imgDisplay = GamePicInfo == null ? "~/img/notfound.jpg" : @"~/img/" + GamePicInfo.Path;
+            });
             return Page();
         }
     }

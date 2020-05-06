@@ -14,6 +14,7 @@ using Tupla.Data.Context;
 using Tupla.Data.Core.CompanyData;
 using Tupla.Data.Core.CustomerData;
 using Tupla.Data.Core.GameData;
+using Tupla.Data.Core.PictureData;
 
 namespace Tupla_Web_Store
 {
@@ -35,6 +36,9 @@ namespace Tupla_Web_Store
             });
             services.AddScoped<ICompany, SqlCompanyData>();
             services.AddScoped<IGame, SqlGameData>();
+            services.AddScoped<IGamePicture, SqlGamePictureData>();
+            services.AddScoped<ICompanyPicture, SqlCompanyPictureData>();
+            services.AddScoped<ICustomerPicture, SqlCustomerPictureData>();
             services.AddRazorPages();
 
             services.Configure<IdentityOptions>(options =>

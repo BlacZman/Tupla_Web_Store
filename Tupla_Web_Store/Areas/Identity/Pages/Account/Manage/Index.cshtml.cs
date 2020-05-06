@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Tupla.Data.Core.CustomerData;
+using Tupla.Data.Core.PictureData;
 using Tupla_Web_Store.Areas.Identity.Data;
 
 namespace Tupla_Web_Store.Areas.Identity.Pages.Account.Manage
@@ -17,19 +21,28 @@ namespace Tupla_Web_Store.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IHtmlHelper htmlHelper;
+        private readonly ICustomerPicture picdb;
+        private readonly IWebHostEnvironment env;
+        private CustomerPicture userPic { get; set; }
 
         public IndexModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
-            IHtmlHelper htmlHelper)
+            IHtmlHelper htmlHelper,
+            ICustomerPicture picdb,
+            IWebHostEnvironment env)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             this.htmlHelper = htmlHelper;
+            this.picdb = picdb;
+            this.env = env;
         }
 
         public IEnumerable<SelectListItem> Genders { get; set; }
         public string Username { get; set; }
+        public IFormFile imgfile { get; set; }
+        public string imgDisplay { get; set; }
 
         [TempData]
         public string StatusMessage { get; set; }
@@ -72,7 +85,8 @@ namespace Tupla_Web_Store.Areas.Identity.Pages.Account.Manage
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
             Username = userName;
-
+            userPic = picdb.GetIconById(Username);
+            imgDisplay = userPic == null ? "~/img/notfound.jpg" : @"~/img/" + userPic.Path;
             Input = new InputModel
             {
                 First_name = user.First_name,
@@ -95,7 +109,6 @@ namespace Tupla_Web_Store.Areas.Identity.Pages.Account.Manage
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
-
             await LoadAsync(user);
             return Page();
         }
@@ -113,6 +126,30 @@ namespace Tupla_Web_Store.Areas.Identity.Pages.Account.Manage
                 Genders = htmlHelper.GetEnumSelectList<Gender>();
                 await LoadAsync(user);
                 return Page();
+            }
+
+            //Image
+            if (imgfile != null)
+            {
+                userPic = userPic == null ? new CustomerPicture() : userPic;
+                //Upload to file system
+                string uploadsFolder = Path.Combine(env.WebRootPath, "img");
+                string uniqueFileName = Path.Combine("user", Guid.NewGuid().ToString() + "_" + imgfile.FileName);
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                //Update database
+                await Task.Run(() =>
+                {
+                    userPic.Path = uniqueFileName;
+                    userPic.imageType = ImageType.Icon;
+                    userPic.Username = user.UserName;
+                });
+                
+                picdb.AddIcon(userPic);
+                await picdb.CommitAsync();
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await imgfile.CopyToAsync(fileStream);
+                }
             }
 
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);

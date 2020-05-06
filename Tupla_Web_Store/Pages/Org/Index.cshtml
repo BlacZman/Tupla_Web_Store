@@ -13,26 +13,28 @@
     <div class="col-xl-9">
         <h2>Your published games</h2>
         <hr />
-        @if (Model.Game.Any())
+        @if (Model.piclist.Any())
         {
-            foreach (var item in Model.Game)
+            foreach (var item in Model.piclist)
             {
-                <div class="row">
+                <div class="row pb-1">
                     <div class="col-xl-2">
-
+                        <!--Image for game-->
+                        <img class="rounded img-fluid" src="@item.Value" asp-append-version="true"
+                             style="width:100%;max-height:60px" />
                     </div>
                     <div class="col-xl-4 my-auto">
-                        @Html.DisplayFor(modelItem => item.GameName)
+                        @Html.DisplayFor(modelItem => item.Key.GameName)
                     </div>
                     <div class="col-xl-2 btn-group my-auto">
                         <!--Manipulate price-->
                         -%<!--Discount in here-->
-                        @Html.DisplayFor(modelItem => item.Price)
+                        @Html.DisplayFor(modelItem => item.Key.Price)
                     </div>
                     <div class="btn-group col-xl-4  my-auto">
                         <a class="btn btn-secondary">Discount</a>
-                        <a class="btn btn-primary" asp-page="./Editgame" asp-route-id="@item.GameId">Edit</a>
-                        <a class="btn btn-danger" asp-page="./Deletegame" asp-route-id="@item.GameId">Delete</a>
+                        <a class="btn btn-primary" asp-page="./Editgame" asp-route-id="@item.Key.GameId">Edit</a>
+                        <a class="btn btn-danger" asp-page="./Deletegame" asp-route-id="@item.Key.GameId">Delete</a>
                     </div>
                 </div>
             }
@@ -49,6 +51,10 @@
         </div>
     </div>
     <div class="col-xl-3">
+        <!--Image for company profile-->
+        <img class="rounded-circle img-fluid" src="@Model.imgDisplay" asp-append-version="true"
+             style="width:100%;max-width:255px;height:255px" />
+        <br /><br />
         <h2>@Html.DisplayFor(model => model.Company.company_name)</h2>
         <hr />
         <h4>Details</h4>
