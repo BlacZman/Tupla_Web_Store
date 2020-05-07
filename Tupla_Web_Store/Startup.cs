@@ -15,6 +15,8 @@ using Tupla.Data.Core.CompanyData;
 using Tupla.Data.Core.CustomerData;
 using Tupla.Data.Core.GameData;
 using Tupla.Data.Core.PictureData;
+using Tupla.Data.Core.PlatformData;
+using Tupla.Data.Core.Tag;
 
 namespace Tupla_Web_Store
 {
@@ -39,6 +41,10 @@ namespace Tupla_Web_Store
             services.AddScoped<IGamePicture, SqlGamePictureData>();
             services.AddScoped<ICompanyPicture, SqlCompanyPictureData>();
             services.AddScoped<ICustomerPicture, SqlCustomerPictureData>();
+            services.AddScoped<IPlatform, SqlPlatformData>();
+            services.AddScoped<IPlatformOfGame, SqlPlatformOfGameData>();
+            services.AddScoped<ITag, SqlTagData>();
+            services.AddScoped<IGameTag, SqlGameTagData>();
             services.AddRazorPages();
 
             services.Configure<IdentityOptions>(options =>
@@ -99,6 +105,12 @@ namespace Tupla_Web_Store
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapControllerRoute(
+                    name: "AppendTag",
+                    pattern: "api/{controller}/Add/{action}/");
+                endpoints.MapControllerRoute(
+                    name: "DelTag",
+                    pattern: "api/{controller}/Del/{action}/");
             });
         }
     }

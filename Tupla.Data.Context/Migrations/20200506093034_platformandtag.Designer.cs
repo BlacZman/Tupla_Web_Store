@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tupla.Data.Context;
 
 namespace Tupla.Data.Context.Migrations
 {
     [DbContext(typeof(TuplaContext))]
-    partial class TuplaContextModelSnapshot : ModelSnapshot
+    [Migration("20200506093034_platformandtag")]
+    partial class platformandtag
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
