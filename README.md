@@ -1,5 +1,6 @@
 # Tupla Web Store
 How to run these thing?!
+
 ****Don't DROP and UPDATE DATABASE DATACONTEXT if you already have previous database setup.****
 - Open project file 'Tupla_Web_Store.sln'
 - In toolbar tab on the top, click Tools
