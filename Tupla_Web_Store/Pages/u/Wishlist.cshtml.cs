@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using Tupla.Data.Context;
 using Tupla.Data.Core.GameData;
 using Tupla.Data.Core.PictureData;
 using Tupla.Data.Core.WishList;
@@ -15,15 +12,14 @@ using Tupla_Web_Store.Areas.Identity.Data;
 
 namespace Tupla_Web_Store.Pages.u
 {
-    [Authorize]
-    public class IndexModel : PageModel
+    public class WishlistModel : PageModel
     {
         private readonly UserManager<User> userManager;
         private readonly IWishList wishlistdb;
         private readonly IGame gamedb;
         private readonly IGamePicture gamepicdb;
 
-        public IndexModel(UserManager<Areas.Identity.Data.User> userManager,
+        public WishlistModel(UserManager<Areas.Identity.Data.User> userManager,
             IWishList wishlistdb,
             IGame gamedb,
             IGamePicture gamepicdb)
@@ -38,7 +34,7 @@ namespace Tupla_Web_Store.Pages.u
 
         public async Task<IActionResult> OnGetAsync()
         {
-            await Task.Run(()=> 
+            await Task.Run(() =>
             {
                 piclist = new Dictionary<Game, string> { };
                 var username = userManager.GetUserName(User);

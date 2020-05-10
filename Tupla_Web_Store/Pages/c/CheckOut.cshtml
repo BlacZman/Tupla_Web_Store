@@ -1,0 +1,70 @@
+﻿@page
+@model Tupla_Web_Store.Pages.c.CheckOutModel
+@{
+    ViewData["Title"] = "CheckOut";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+@inject Tupla.Data.Core.PlatformData.IPlatform platformdb
+<h1>CheckOut</h1>
+<div class="row">
+    <div class="col-sm-12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <td>
+                        Game
+                    </td>
+                    <td>
+                        Price
+                    </td>
+                    <td>
+                        Quantity
+                    </td>
+                    <td>
+                        Platform
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Summary)
+                {
+                    <tr>
+                        <td>
+                            @item.Value.GameName
+                        </td>
+                        <td>
+                            @item.Value.Price
+                        </td>
+                        <td>
+                            @item.Key.Quantity
+                        </td>
+                        <td>
+                            @platformdb.GetById(item.Key.PlatformId).Platform_name
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <hr />
+        <span>Total : @Model.Total</span>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <hr />
+        Payment Method: <select asp-items="@Model.CreditCards"></select>
+    </div>
+</div>
+<div class="row">
+    <div class="row col-6">
+        <div class="col-1 mr-auto">
+            <a class="btn btn-primary" asp-page="./Index">Back</a>
+        </div>
+        <div class="col-1">
+            <form method="post">
+                <input type="submit" class="btn btn-success" value="Buy" />
+            </form>
+        </div>
+    </div>
+</div>
+

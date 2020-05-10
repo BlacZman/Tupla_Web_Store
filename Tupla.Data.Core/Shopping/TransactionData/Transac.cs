@@ -17,6 +17,7 @@ namespace Tupla.Data.Core.Shopping.TransactionData
         public string Username { get; set; }
         public Customer Customers { get; set; }
         [Required]
+        [DataType(DataType.Date)]
         public DateTime OrderDate { get; set; }
     }
 }

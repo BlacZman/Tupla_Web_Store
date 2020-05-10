@@ -21,6 +21,7 @@ namespace Tupla.Data.Core.Shopping.CartData
         [MaxLength(256)]
         public string CartId { get; set; }
         public Customer Customers { get; set; }
+        [Range(1,100)]
         public int Quantity { get; set; }
     }
 }
