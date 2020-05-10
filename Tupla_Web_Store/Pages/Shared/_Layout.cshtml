@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/_Layout.css" />
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/Index.css"/>
+        <link rel="stylesheet" href="~/css/Index.css"/>
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
@@ -22,7 +22,7 @@
 <body class="body-bg">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-custom-navbar border-bottom box-shadow mb-3">
-            <div class="container">
+            <div class="container-fluid">
                 <a class="bg-logo" asp-area="" asp-page="/Index"></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -31,18 +31,18 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark mitr-font" asp-area="" asp-page="">
+                            <a class="nav-link text-dark" asp-area="" asp-page="">
                             <span class="fas fa-archive"></span> คลัง
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark mitr-font" asp-area="" asp-page="/g/Index">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/g/Index">
                             <span class="fas fa-gem"></span> ร้านค้า
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-page="/Org/Index">
-                                Sell keys
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Org/Index">
+                                <span class="fas fa-key"></span> ขายคีย์
                             </a>
                         </li>
                     </ul>
@@ -51,7 +51,7 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container-fluid">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -64,8 +64,10 @@
     </footer>
 
     <environment include="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/script.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="~/js/jquery.backstretch.min.js"></script>
+        <script src="~/js/wow.min.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
 
