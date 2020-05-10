@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using Tupla_Web_Store.Areas.Identity.Data
+
+@inject SignInManager<User> SignInManager
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -9,7 +13,7 @@
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/_Layout.css" />
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/Index.css"/>
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/Index.css" />
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
@@ -17,7 +21,6 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
-    <script src="https://kit.fontawesome.com/ba8c526c07.js" crossorigin="anonymous"></script>
 </head>
 <body class="body-bg">
     <header>
@@ -30,14 +33,17 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark mitr-font" asp-area="" asp-page="">
-                            <span class="fas fa-archive"></span> คลัง
-                            </a>
-                        </li>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark mitr-font" asp-area="" asp-page="">
+                                    <span class="fas fa-archive"></span> คลัง
+                                </a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-dark mitr-font" asp-area="" asp-page="/g/Index">
-                            <span class="fas fa-gem"></span> ร้านค้า
+                                <span class="fas fa-gem"></span> ร้านค้า
                             </a>
                         </li>
                         <li class="nav-item">
@@ -65,8 +71,10 @@
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="https://kit.fontawesome.com/ba8c526c07.js" crossorigin="anonymous"></script>
     </environment>
 
     @RenderSection("Scripts", required: false)

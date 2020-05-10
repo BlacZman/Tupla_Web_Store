@@ -1,5 +1,6 @@
 ﻿@page "{id:int?}"
 @model Tupla_Web_Store.Pages.Org.EditgameModel
+@inject Tupla.Data.Core.PlatformData.IPlatform platformdb
 
 @{
     ViewData["Title"] = "Editgame";
@@ -39,6 +40,7 @@
             <br /><br />
             <input type="hidden" asp-for="Game.GameId" />
             <input type="hidden" asp-for="Game.CompanyID" />
+            <input type="hidden" asp-for="Game.ReleaseDate" />
             <div class="form-group">
                 <label asp-for="Game.GameName" class="control-label"></label>
                 <input asp-for="Game.GameName" class="form-control" />
@@ -50,25 +52,107 @@
                 <span asp-validation-for="Game.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Game.HtmlText" class="control-label"></label>
-                <textarea asp-for="Game.HtmlText" class="form-control"></textarea>
-                <span asp-validation-for="Game.HtmlText" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Game.Price" class="control-label"></label>
                 <input asp-for="Game.Price" class="form-control" />
                 <span asp-validation-for="Game.Price" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Game.HtmlText" class="control-label"></label>
+                <textarea asp-for="Game.HtmlText" class="form-control"></textarea>
+                <span asp-validation-for="Game.HtmlText" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
+        <div>
+            <a asp-page="./Index">Back to List</a>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <h5>Platform</h5>
+        <button type="button" class="btn btn-dark rounded" data-toggle="modal" data-target="#Modal">
+            <i class="fas fa-search"></i>
+        </button>
     </div>
 </div>
 
-<div>
-    <a asp-page="./Index">Back to List</a>
+<div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">Edit platform</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <!--Modal body-->
+                    <div class="col-12">
+                        <h6>Platform of @Model.Game.GameName</h6>
+                        <!--platform-->
+                        @if (Model.ListOfSupportedPlatform != null)
+                        {
+                            if (Model.ListOfSupportedPlatform.Any())
+                            {
+                                foreach (var item in Model.ListOfSupportedPlatform)
+                                {
+                                    Model.delGamePlatform.GameId = item.GameId;
+                                    Model.delGamePlatform.PlatformId = item.PlatformId;
+                                    var platformname = platformdb.GetById(Model.delGamePlatform.PlatformId).Platform_name;
+                                    <div class="row">
+                                        <form method="post">
+                                            <div class="input-group my-auto">
+                                                <div class="col-9">
+                                                    <span class="col-11  my-auto">@platformname</span>
+                                                </div>
+                                                <input asp-for="@Model.delGamePlatform.GameId" hidden />
+                                                <input asp-for="@Model.delGamePlatform.PlatformId" hidden />
+                                                <div class="col-1">
+                                                    <input class="btn-danger" type="submit" value="&times;"
+                                                           style="width:30px; height:30px" />
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                }
+                            }
+                        }
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-12">
+                        <h6>Add new platform</h6>
+                        <div>
+                            <form method="post">
+                                <div class="form-group">
+                                    <label asp-for="@Model.newGamePlatform.PlatformId" class="control-label"></label>
+                                    <span asp-validation-for="@Model.newGamePlatform.PlatformId" class="text-danger"></span>
+                                    <div class="input-group-append">
+                                        <select asp-for="@Model.newGamePlatform.PlatformId" asp-items="@Model.PlatformList">
+                                            <option disabled selected>Select a platform</option>
+                                        </select>
+                                        <input asp-for="@Model.newGamePlatform.Authentication" class="form-control" />
+                                        <input asp-for="Game.GameId" hidden />
+                                    </div>
+                                    <span asp-validation-for="@Model.newGamePlatform.Authentication" class="text-danger"></span>
+                                </div>
+                                <input type="submit" class="btn-primary" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
 </div>
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Tupla.Data.Context;
 using Tupla.Data.Core.GameData;
 using Tupla.Data.Core.PictureData;
+using Tupla.Data.Core.PlatformData;
 
 namespace Tupla_Web_Store.Pages.Org
 {
@@ -23,6 +24,8 @@ namespace Tupla_Web_Store.Pages.Org
         private readonly UserManager<Areas.Identity.Data.User> userManager;
         private readonly IGame db;
         private readonly IGamePicture picdb;
+        private readonly IPlatform platformdb;
+        private readonly IPlatformOfGame gamePlatformdb;
         private readonly IWebHostEnvironment env;
 
         private GamePicture GamePicInfo { get; set; }
@@ -30,11 +33,15 @@ namespace Tupla_Web_Store.Pages.Org
         public AddgameModel(UserManager<Areas.Identity.Data.User> userManager, 
             IGame db,
             IGamePicture picdb,
+            IPlatform platformdb,
+            IPlatformOfGame gamePlatformdb,
             IWebHostEnvironment env)
         {
             this.userManager = userManager;
             this.db = db;
             this.picdb = picdb;
+            this.platformdb = platformdb;
+            this.gamePlatformdb = gamePlatformdb;
             this.env = env;
         }
 
@@ -52,6 +59,7 @@ namespace Tupla_Web_Store.Pages.Org
                 await Task.Run(() =>
                 {
                     imgDisplay = "~/img/notfound.jpg";
+                    PlatformList = new SelectList(platformdb.GetAllByName(""), "PlatformId", "Platform_name");
                 });
                 return Page();
             }
@@ -59,6 +67,9 @@ namespace Tupla_Web_Store.Pages.Org
 
         [BindProperty]
         public Game Game { get; set; }
+        [BindProperty]
+        public PlatformOfGame newGamePlatform { get; set; }
+        public IEnumerable<SelectListItem> PlatformList { get; set; }
         public IFormFile Imgfile { get; set; }
         public string imgDisplay { get; set; }
 
@@ -68,6 +79,7 @@ namespace Tupla_Web_Store.Pages.Org
         {
             if (!ModelState.IsValid)
             {
+                PlatformList = new SelectList(platformdb.GetAllByName(""), "PlatformId", "Platform_name");
                 return Page();
             }
             
@@ -82,6 +94,11 @@ namespace Tupla_Web_Store.Pages.Org
             });
             db.Add(Game);
             await db.CommitAsync();
+
+            //PlatformOfGame
+            newGamePlatform.GameId = Game.GameId;
+            gamePlatformdb.Add(newGamePlatform);
+            await gamePlatformdb.CommitAsync();
             
             //Image uploading
             if (Imgfile != null)

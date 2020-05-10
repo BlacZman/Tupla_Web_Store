@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Tupla.Data.Core.PlatformData;
+using Microsoft.EntityFrameworkCore;
 
 namespace Tupla.Data.Context
 {
@@ -23,12 +24,26 @@ namespace Tupla.Data.Context
 
         public int Commit()
         {
-            return db.SaveChanges();
+            try
+            {
+                return db.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
         }
 
         public async Task<int> CommitAsync()
         {
-            return await db.SaveChangesAsync();
+            try
+            {
+                return await db.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
         }
 
         public void Delete(Platform deletePlatform)

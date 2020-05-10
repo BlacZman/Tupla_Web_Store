@@ -64,6 +64,23 @@ namespace Tupla.Data.Context.Migrations
                     b.ToTable("Company");
                 });
 
+            modelBuilder.Entity("Tupla.Data.Core.CreditCard.CreditCard", b =>
+                {
+                    b.Property<string>("CreditId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.HasKey("CreditId");
+
+                    b.HasIndex("Username");
+
+                    b.ToTable("CreditCard");
+                });
+
             modelBuilder.Entity("Tupla.Data.Core.CustomerData.Customer", b =>
                 {
                     b.Property<string>("Username")
@@ -248,6 +265,71 @@ namespace Tupla.Data.Context.Migrations
                     b.ToTable("PlatformOfGame");
                 });
 
+            modelBuilder.Entity("Tupla.Data.Core.Shopping.CartData.Cart", b =>
+                {
+                    b.Property<int>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlatformId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CartId")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("GameId", "PlatformId", "CartId");
+
+                    b.HasIndex("CartId");
+
+                    b.ToTable("Cart");
+                });
+
+            modelBuilder.Entity("Tupla.Data.Core.Shopping.OrderDetailData.OrderDetail", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlatformId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderId", "GameId", "PlatformId");
+
+                    b.HasIndex("GameId", "PlatformId");
+
+                    b.ToTable("OrderDetail");
+                });
+
+            modelBuilder.Entity("Tupla.Data.Core.Shopping.TransactionData.Transac", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.HasKey("OrderId");
+
+                    b.HasIndex("Username");
+
+                    b.ToTable("Transaction");
+                });
+
             modelBuilder.Entity("Tupla.Data.Core.Tag.GameTag", b =>
                 {
                     b.Property<int>("GameId")
@@ -287,6 +369,31 @@ namespace Tupla.Data.Context.Migrations
                     b.HasIndex("Username");
 
                     b.ToTable("Tag");
+                });
+
+            modelBuilder.Entity("Tupla.Data.Core.WishList.WishList", b =>
+                {
+                    b.Property<int>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.HasKey("GameId", "Username");
+
+                    b.HasIndex("Username");
+
+                    b.ToTable("WishList");
+                });
+
+            modelBuilder.Entity("Tupla.Data.Core.CreditCard.CreditCard", b =>
+                {
+                    b.HasOne("Tupla.Data.Core.CustomerData.Customer", "Customers")
+                        .WithMany()
+                        .HasForeignKey("Username")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Tupla.Data.Core.GameData.Game", b =>
@@ -340,6 +447,45 @@ namespace Tupla.Data.Context.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Tupla.Data.Core.Shopping.CartData.Cart", b =>
+                {
+                    b.HasOne("Tupla.Data.Core.CustomerData.Customer", "Customers")
+                        .WithMany()
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Tupla.Data.Core.PlatformData.PlatformOfGame", "PlatformOfGame")
+                        .WithMany()
+                        .HasForeignKey("GameId", "PlatformId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Tupla.Data.Core.Shopping.OrderDetailData.OrderDetail", b =>
+                {
+                    b.HasOne("Tupla.Data.Core.Shopping.TransactionData.Transac", "Transaction")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Tupla.Data.Core.PlatformData.PlatformOfGame", "PlatformOfGame")
+                        .WithMany()
+                        .HasForeignKey("GameId", "PlatformId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Tupla.Data.Core.Shopping.TransactionData.Transac", b =>
+                {
+                    b.HasOne("Tupla.Data.Core.CustomerData.Customer", "Customers")
+                        .WithMany()
+                        .HasForeignKey("Username")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Tupla.Data.Core.Tag.GameTag", b =>
                 {
                     b.HasOne("Tupla.Data.Core.GameData.Game", "Game")
@@ -363,6 +509,21 @@ namespace Tupla.Data.Context.Migrations
 
             modelBuilder.Entity("Tupla.Data.Core.Tag.Tag", b =>
                 {
+                    b.HasOne("Tupla.Data.Core.CustomerData.Customer", "Customers")
+                        .WithMany()
+                        .HasForeignKey("Username")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Tupla.Data.Core.WishList.WishList", b =>
+                {
+                    b.HasOne("Tupla.Data.Core.GameData.Game", "Game")
+                        .WithMany()
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Tupla.Data.Core.CustomerData.Customer", "Customers")
                         .WithMany()
                         .HasForeignKey("Username")

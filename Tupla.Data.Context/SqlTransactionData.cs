@@ -4,23 +4,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tupla.Data.Core.Tag;
+using Tupla.Data.Core.Shopping.TransactionData;
 
 namespace Tupla.Data.Context
 {
-    public class SqlTagData : ITag
+    public class SqlTransactionData : ITransaction
     {
         private readonly TuplaContext db;
 
-        public SqlTagData(TuplaContext db)
+        public SqlTransactionData(TuplaContext db)
         {
             this.db = db;
         }
-
-        public Tag Add(Tag newTag)
+        public Transac Add(Transac newTransaction)
         {
-            db.Add(newTag);
-            return newTag;
+            db.Add(newTransaction);
+            return newTransaction;
         }
 
         public int Commit()
@@ -47,26 +46,26 @@ namespace Tupla.Data.Context
             }
         }
 
-        public void Delete(Tag deleteTag)
+        public void Delete(Transac deleteTransaction)
         {
-            db.Remove(deleteTag);
+            db.Remove(deleteTransaction);
         }
 
-        public Tag GetById(int id)
+        public Transac GetById(int Id)
         {
-            return db.Tag.FirstOrDefault(r => r.TagId == id);
+            return db.Transaction.FirstOrDefault(r => r.OrderId == Id);
         }
 
-        public async Task<Tag> GetByIdAsync(int id)
+        public async Task<Transac> GetByIdAsync(int Id)
         {
-            return await db.Tag.FirstOrDefaultAsync(r => r.TagId == id);
+            return await db.Transaction.FirstOrDefaultAsync(r => r.OrderId == Id);
         }
 
-        public IEnumerable<Tag> GetByUsername(string username)
+        public IEnumerable<Transac> GetByUsername(string username)
         {
-            var query = from r in db.Tag
+            var query = from r in db.Transaction
                         where string.IsNullOrEmpty(username) || r.Username == username
-                        orderby r.TagName
+                        orderby r.OrderDate descending
                         select r;
             return query;
         }

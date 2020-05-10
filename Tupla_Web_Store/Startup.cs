@@ -12,11 +12,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Tupla.Data.Context;
 using Tupla.Data.Core.CompanyData;
+using Tupla.Data.Core.CreditCard;
 using Tupla.Data.Core.CustomerData;
 using Tupla.Data.Core.GameData;
 using Tupla.Data.Core.PictureData;
 using Tupla.Data.Core.PlatformData;
+using Tupla.Data.Core.Shopping.CartData;
+using Tupla.Data.Core.Shopping.OrderDetailData;
+using Tupla.Data.Core.Shopping.TransactionData;
 using Tupla.Data.Core.Tag;
+using Tupla.Data.Core.WishList;
 
 namespace Tupla_Web_Store
 {
@@ -45,6 +50,11 @@ namespace Tupla_Web_Store
             services.AddScoped<IPlatformOfGame, SqlPlatformOfGameData>();
             services.AddScoped<ITag, SqlTagData>();
             services.AddScoped<IGameTag, SqlGameTagData>();
+            services.AddScoped<IWishList, SqlWishListData>();
+            services.AddScoped<ICreditCard, SqlCreditCardData>();
+            services.AddScoped<ICart, SqlCartData>();
+            services.AddScoped<IOrderDetail, SqlOrderDetailData>();
+            services.AddScoped<ITransaction, SqlTransactionData>();
             services.AddRazorPages();
 
             services.Configure<IdentityOptions>(options =>
@@ -105,12 +115,6 @@ namespace Tupla_Web_Store
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
-                endpoints.MapControllerRoute(
-                    name: "AppendTag",
-                    pattern: "api/{controller}/Add/{action}/");
-                endpoints.MapControllerRoute(
-                    name: "DelTag",
-                    pattern: "api/{controller}/Del/{action}/");
             });
         }
     }

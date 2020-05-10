@@ -1,29 +1,18 @@
 ﻿@page
-@model Tupla_Web_Store.Pages.g.IndexModel
+@model Tupla_Web_Store.Pages.u.IndexModel
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
-<form method="get">
-    <div class="form-group">
-        <div class="input-group">
-            <input type="search" class="form-control" asp-for="search" />
-            <span class="input-group-btn">
-                <button class="btn btn-outline-dark">
-                    <i class="fas fa-search"></i>
-                </button>
-            </span>
-        </div>
-    </div>
-</form>
+<h1>Your Wishlist</h1>
+
 @if (Model.piclist.Any())
 {
     foreach (var item in Model.piclist)
     {
-        <a class="row btn-outline-dark pb-1" asp-page="./Detail" asp-route-id="@item.Key.GameId">
+        <a class="row btn-outline-dark pb-1" asp-page="../g/Detail" asp-route-id="@item.Key.GameId">
             <div class="col-xl-2">
                 <!--Image 16:9 192px * 108px-->
                 <img class="rounded img-fluid" src="@item.Value" asp-append-version="true"
@@ -43,13 +32,12 @@
             <hr />
         </a>
     }
-    <a class="btn btn-primary" asp-page="../Index">Back to home</a>
+    <a class="btn btn-primary" asp-page="../g/Index">Back to game</a>
 }
 else
 {
     <div class="col-12 m-auto">
-        There's none in our store.
+        There's none in your wishlist.
     </div>
-    <a class="btn btn-primary" asp-page="../Index">Back to home</a>
+    <a class="btn btn-primary" asp-page="../g/Index">Back to game</a>
 }
-

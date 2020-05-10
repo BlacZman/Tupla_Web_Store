@@ -4,23 +4,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tupla.Data.Core.Tag;
+using Tupla.Data.Core.CreditCard;
 
 namespace Tupla.Data.Context
 {
-    public class SqlTagData : ITag
+    public class SqlCreditCardData : ICreditCard
     {
         private readonly TuplaContext db;
 
-        public SqlTagData(TuplaContext db)
+        public SqlCreditCardData(TuplaContext db)
         {
             this.db = db;
         }
-
-        public Tag Add(Tag newTag)
+        public CreditCard Add(CreditCard addCreditCard)
         {
-            db.Add(newTag);
-            return newTag;
+            db.Add(addCreditCard);
+            return addCreditCard;
         }
 
         public int Commit()
@@ -47,26 +46,21 @@ namespace Tupla.Data.Context
             }
         }
 
-        public void Delete(Tag deleteTag)
+        public void Delete(CreditCard delCreditCard)
         {
-            db.Remove(deleteTag);
+            db.Remove(delCreditCard);
         }
 
-        public Tag GetById(int id)
+        public CreditCard GetById(string CreditId)
         {
-            return db.Tag.FirstOrDefault(r => r.TagId == id);
+            return db.CreditCard.FirstOrDefault(r => r.CreditId == CreditId);
         }
 
-        public async Task<Tag> GetByIdAsync(int id)
+        public IEnumerable<CreditCard> GetCreditCardByUsername(string username)
         {
-            return await db.Tag.FirstOrDefaultAsync(r => r.TagId == id);
-        }
-
-        public IEnumerable<Tag> GetByUsername(string username)
-        {
-            var query = from r in db.Tag
+            var query = from r in db.CreditCard
                         where string.IsNullOrEmpty(username) || r.Username == username
-                        orderby r.TagName
+                        orderby r.CreditId
                         select r;
             return query;
         }

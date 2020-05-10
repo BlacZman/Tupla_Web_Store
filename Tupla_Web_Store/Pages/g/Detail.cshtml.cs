@@ -8,11 +8,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Tupla.Data.Context;
 using Tupla.Data.Core.GameData;
 using Tupla.Data.Core.PictureData;
+using Tupla.Data.Core.PlatformData;
 using Tupla.Data.Core.Tag;
+using Tupla.Data.Core.WishList;
 using Tupla_Web_Store.Areas.Identity.Data;
 
 namespace Tupla_Web_Store.Pages.g
@@ -25,29 +28,41 @@ namespace Tupla_Web_Store.Pages.g
         private readonly IGame db;
         private readonly IGamePicture picdb;
         private readonly IGameTag dbgametag;
+        private readonly IPlatform platformdb;
+        private readonly IPlatformOfGame gamePlatformdb;
         private readonly ITag dbTag;
+        private readonly IWishList wishdb;
 
         public DetailModel(UserManager<Areas.Identity.Data.User> userManager,
             TuplaContext context,
             IGame db,
             IGamePicture picdb,
             IGameTag dbgametag,
-            ITag dbTag)
+            IPlatform platformdb,
+            IPlatformOfGame gamePlatformdb,
+            ITag dbTag,
+            IWishList wishdb)
         {
             this.userManager = userManager;
             this.context = context;
             this.db = db;
             this.picdb = picdb;
             this.dbgametag = dbgametag;
+            this.platformdb = platformdb;
+            this.gamePlatformdb = gamePlatformdb;
             this.dbTag = dbTag;
+            this.wishdb = wishdb;
         }
         [BindProperty]
         public Game Game { get; set; }
         public string imgDisplay { get; set; }
+        public IEnumerable<SelectListItem> ListOfSupportedPlatform { get; set; }
         [BindProperty]
         public AddTagFormModel AddTag { get; set; }
         [BindProperty]
         public DelTagFormModel DeleteTag { get; set; }
+        [BindProperty]
+        public WishList wish { get; set; }
         public List<Tag> userTag { get; set; }
         public List<KeyValuePair<string, int>> list { get; set; }
         public async Task<IActionResult> OnGetAsync(int? id)
@@ -81,6 +96,14 @@ namespace Tupla_Web_Store.Pages.g
                     list = dict.ToList();
                     list.Sort((p1, p2) => p2.Value.CompareTo(p1.Value));
                 }
+                var platform = platformdb.GetAllByName("");
+                var listgame = gamePlatformdb.GetAllSupportedPlatform(Game.GameId);
+                var query = from r in listgame
+                            join s in platform
+                            on r.PlatformId equals s.PlatformId
+                            orderby s.Platform_name
+                            select s;
+                ListOfSupportedPlatform = new SelectList(query, "PlatformId", "Platform_name");
                 AddTag = new AddTagFormModel();
                 DeleteTag = new DelTagFormModel();
             });
@@ -88,6 +111,7 @@ namespace Tupla_Web_Store.Pages.g
             {
                 userTag = new List<Tag> { };
                 string username = userManager.GetUserName(User);
+                wish = wishdb.GetById(Game.GameId, username) ?? new WishList();
                 IEnumerable<GameTag> userGameTag = dbgametag.GetByUsername(Game.GameId, username);
                 if (userGameTag.Any())
                 {
@@ -151,6 +175,22 @@ namespace Tupla_Web_Store.Pages.g
                 dbTag.Delete(DelTag);
                 await dbTag.CommitAsync();
                 return RedirectToPage(Url.Content("~/g/Detail"), new { id = Game.GameId });
+            }
+            else if(wish != null)
+            {
+                if(wish.Username != null)
+                {
+                    wishdb.Delete(wish);
+                    await wishdb.CommitAsync();
+                    return RedirectToPage(Url.Content("~/g/Detail"), new { id = wish.GameId });
+                }
+                else
+                {
+                    await Task.Run(()=> wish.Username = userManager.GetUserName(User));
+                    wishdb.Add(wish);
+                    await wishdb.CommitAsync();
+                    return RedirectToPage(Url.Content("~/g/Detail"), new { id = wish.GameId });
+                }
             }
             else
             {
