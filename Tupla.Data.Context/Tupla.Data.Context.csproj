@@ -14,8 +14,4 @@
     <ProjectReference Include="..\Tupla.Data.Core\Tupla.Data.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
 </Project>

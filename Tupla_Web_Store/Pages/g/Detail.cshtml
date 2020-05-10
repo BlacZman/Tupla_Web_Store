@@ -1,0 +1,160 @@
+﻿@page "{id:int?}"
+@model Tupla_Web_Store.Pages.g.DetailModel
+
+@using Microsoft.AspNetCore.Identity
+@using Tupla_Web_Store.Areas.Identity.Data
+@inject SignInManager<User> SignInManager
+
+
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+    Model.DeleteTag.gameid = Model.Game.GameId;
+    Model.AddTag.gameid = Model.Game.GameId;
+}
+
+<div>
+    <h1>@Html.DisplayFor(model => model.Game.GameName)</h1>
+    <hr />
+    <div class="row">
+        <div class="col-md-8">
+            <!--Video and image-->
+        </div>
+        <div class="col-md-4 card">
+            <div class="card-img-top">
+                <!--Image icon-->
+                <img class="img-fluid" src="@Model.imgDisplay" asp-append-version="true"
+                     style="width:100%;height:200px" />
+            </div>
+            <div class="card-body">
+                <div class="card-text">
+                    @Html.DisplayFor(model => model.Game.Description)
+                </div>
+                <dl class="card-text">
+                    <dt>@Html.DisplayNameFor(model => model.Game.ReleaseDate)</dt>
+                    <dd>@Html.DisplayFor(model => model.Game.ReleaseDate)</dd>
+                </dl>
+                <div>
+                    <!--tag here-->
+                    @if (Model.list != null)
+                    {
+                        foreach (var item in Model.list.Take(6))
+                        {
+                            <a class="px-2 py-1 btn-dark rounded text-white">
+                                @item.Key
+                            </a>
+                        }
+                    }
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <button type="button" class="btn-dark rounded" data-toggle="modal" data-target="#Modal">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    }
+                    else
+                    {
+                        <a class="px-2 py-1 btn-dark rounded" asp-area="Identity" asp-page="/Account/Login"
+                           asp-route-returnUrl="@HttpContext.Request.Path.ToUriComponent()">
+                            <i class="fas fa-plus"></i>
+                        </a>
+                    }
+                </div>
+                <br />
+                <div class="col-lg-12 btn-group">
+                    <div class="btn btn-dark">
+                        @Html.DisplayFor(model => model.Game.Price)
+                    </div>
+                    <a class="btn btn-success">
+                        Add to basket
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-8">
+            @Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.Game.HtmlText ?? ""))
+        </div>
+        <div class="col-xl-4">
+
+        </div>
+    </div>
+</div>
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+<div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">Edit tag</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <!--Body of modal-->
+                    <div class="col-sm-6 border-right">
+                        <h6>Popular tags</h6>
+                        <div class="row">
+                            <!--Tag popular-->
+                            @if (Model.list != null)
+                            {
+                                foreach (var item in Model.list)
+                                {
+                                    <div class="col-12">
+                                        @item.Key
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <h6>Your tags in @Model.Game.GameName</h6>
+
+                        <!--User tag-->
+                        @if (Model.userTag.Any())
+                        {
+                            foreach (var item in Model.userTag)
+                            {
+                                Model.DeleteTag.tagid = item.TagId;
+                                <div class="row">
+                                    <form method="post">
+                                        <div class="input-group my-auto">
+                                            <div class="col-9">
+                                                <span class="col-11  my-auto">@item.TagName</span>
+                                            </div>
+                                            <input asp-for="@Model.DeleteTag.gameid" hidden />
+                                            <input asp-for="@Model.DeleteTag.tagid" hidden />
+                                            <div class="col-1">
+                                                <input class="btn-danger" type="submit" value="&times;"
+                                                       style="width:30px; height:30px" />
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            }
+                        }
+                        <hr />
+                        <h6>Add new tags</h6>
+                        <div>
+                            <form method="post">
+                                <div class="input-group rounded">
+                                    <input asp-for="@Model.AddTag.gameid" hidden />
+                                    <input asp-for="@Model.AddTag.tag" class="form-control" />
+                                    <span asp-validation-for="@Model.AddTag.tag" class="text-danger"></span>
+                                    <input type="submit" class="btn-primary" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

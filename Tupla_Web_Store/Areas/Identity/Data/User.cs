@@ -20,6 +20,7 @@ namespace Tupla_Web_Store.Areas.Identity.Data
         [PersonalData]
         public Gender Gender { get; set; }
         [PersonalData]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:D}")]
         public DateTime Date_of_birth { get; set; }
         [PersonalData]
         public string Address { get; set; }
@@ -31,6 +32,7 @@ namespace Tupla_Web_Store.Areas.Identity.Data
         public int? CompanyID { get; set; } = null;
         public Company Company { get; set; }
         [PersonalData]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:D}")]
         public DateTime UserCreateDate { get; set; }
     }
 }

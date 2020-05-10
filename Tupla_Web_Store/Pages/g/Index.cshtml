@@ -19,21 +19,25 @@
         </div>
     </div>
 </form>
-<table class="table">
-@foreach (var item in Model.Game) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.GameName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ReleaseDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Price)
-        </td>
-    </tr>
+@foreach (var item in Model.piclist)
+{
+    <a class="row btn-outline-dark pb-1" asp-page="./Detail" asp-route-id="@item.Key.GameId">
+        <div class="col-xl-2">
+            <!--Image 16:9 192px * 108px-->
+            <img class="rounded img-fluid" src="@item.Value" asp-append-version="true"
+                 style="width:100%;max-height:108px" />
+        </div>
+        <div class="col-xl-5 my-auto">
+            @Html.DisplayFor(modelItem => item.Key.GameName)
+        </div>
+        <div class="col-xl-2 my-auto">
+            @Html.DisplayFor(modelItem => item.Key.ReleaseDate)
+        </div>
+        <div class="col-xl-3 btn-group my-auto">
+            <!--Manipulate price-->
+            -%<!--Discount in here-->
+            @Html.DisplayFor(modelItem => item.Key.Price)
+        </div>
+        <hr/>
+    </a>
 }
-</table>

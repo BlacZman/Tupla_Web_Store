@@ -24,7 +24,14 @@ namespace Tupla.Data.Context
 
         public int Commit()
         {
-            return db.SaveChanges();
+            try
+            {
+                return db.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
         }
 
         public async Task<int> CommitAsync()

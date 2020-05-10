@@ -43,6 +43,7 @@ namespace Tupla.Data.Core.CompanyData
         [Required]
         [Display(Name = "Created since")]
         [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:D}")]
         public DateTime company_create_date { get; set; }
     }
 }

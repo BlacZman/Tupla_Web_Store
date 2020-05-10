@@ -11,6 +11,8 @@ namespace Tupla.Data.Core.GameData
         IEnumerable<Game> GetGamesByCompanyId(int id);
         Game GetById(int? id);
         Task<Game> GetByIdAsync(int? id);
+        Game GetByIdAuthorize(int? id, int companyId);
+        Task<Game> GetByIdAuthorizeAsync(int? id, int companyId);
         Game Update(Game updateGame);
         Game Add(Game newGame);
         void Delete(Game deleteGame);

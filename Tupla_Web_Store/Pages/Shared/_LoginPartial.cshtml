@@ -3,12 +3,27 @@
 
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
-
+@inject Tupla.Data.Core.PictureData.ICustomerPicture picdb
+@{ 
+    var Username = UserManager.GetUserName(User);
+    var imgpath = picdb.GetIconById(Username);
+}
 <ul class="nav-float-right">
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
-        <a id="manage" class="nav-link text-dark mitr-font" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+        <a id="manage" class="nav-link text-dark mitr-font" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+            @if (imgpath != null)
+            {
+                <img class="rounded-circle" src="~/img/@imgpath.Path" alt="Hello @Username!" asp-append-version="true"
+                     width="40" height="40"/>
+            }
+            else
+            {
+                <img class="rounded-circle" src="~/img/notfound.jpg" alt="Hello @Username!" asp-append-version="true"
+                     width="40" height="40"/>
+            }
+        </a>
     </li>
     <li class="nav-item">
         <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
