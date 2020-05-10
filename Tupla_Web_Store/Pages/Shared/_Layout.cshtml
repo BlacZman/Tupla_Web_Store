@@ -48,7 +48,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-page="/Org/Index">
-                                Sell keys
+                                <span class="fas fa-key"></span> ขายคีย์
                             </a>
                         </li>
                     </ul>
@@ -72,9 +72,15 @@
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/js/jquery.backstretch.min.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
         <script src="https://kit.fontawesome.com/ba8c526c07.js" crossorigin="anonymous"></script>
+
+        <script src="~/js/script.js"></script>
+        <script src="~/js/wow.min.js"></script>
+
     </environment>
 
     @RenderSection("Scripts", required: false)
