@@ -1,13 +1,18 @@
 # Tupla Web Store
 How to run these thing?!
+
+****Don't DROP and UPDATE DATABASE DATACONTEXT if you already have previous database setup.****
 - Open project file 'Tupla_Web_Store.sln'
 - In toolbar tab on the top, click Tools
 - Go to 'NuGet Package Manager'
 - Open 'Package Manager Console'
 - Find the Default project, that's at the top in command-line window.
 - select Default project to 'Tupla_Web_Store'
-- In command-line, type "Drop-Database -Context DataContext"
-- In command-line, type "Update-Database -Context DataContext"
+
+**- In command-line, type "Drop-Database -Context DataContext"**
+
+**- In command-line, type "Update-Database -Context DataContext"**
+
 - Find the Default project, that's at the top in command-line window.
 - select Default project to 'Tupla.Data.Context'
 - In command-line, type "Update-Database -Context TuplaContext"
