@@ -15,9 +15,30 @@ namespace Tupla.Data.Context.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.3")
+                .HasAnnotation("ProductVersion", "3.1.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("Tupla.Data.Core.CodeData.Code", b =>
+                {
+                    b.Property<string>("CodeId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlatformId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CodeId");
+
+                    b.HasIndex("OrderId", "GameId", "PlatformId");
+
+                    b.ToTable("Code");
+                });
 
             modelBuilder.Entity("Tupla.Data.Core.CompanyData.Company", b =>
                 {
@@ -265,6 +286,79 @@ namespace Tupla.Data.Context.Migrations
                     b.ToTable("PlatformOfGame");
                 });
 
+            modelBuilder.Entity("Tupla.Data.Core.PromotionData.EventPromotion", b =>
+                {
+                    b.Property<int>("EventId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Event_end_date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Event_name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<DateTime>("Event_start_date")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("EventId");
+
+                    b.ToTable("EventPromotion");
+                });
+
+            modelBuilder.Entity("Tupla.Data.Core.PromotionData.Promotion", b =>
+                {
+                    b.Property<int>("PromotionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Percentage")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlatformId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PromotionId");
+
+                    b.HasIndex("EventId");
+
+                    b.HasIndex("GameId", "PlatformId");
+
+                    b.ToTable("Promotion");
+                });
+
+            modelBuilder.Entity("Tupla.Data.Core.ReviewData.Review", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlatformId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Recommended")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Review_Detail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("OrderId", "GameId", "PlatformId");
+
+                    b.ToTable("Review");
+                });
+
             modelBuilder.Entity("Tupla.Data.Core.Shopping.CartData.Cart", b =>
                 {
                     b.Property<int>("GameId")
@@ -319,7 +413,6 @@ namespace Tupla.Data.Context.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Username")
-                        .IsRequired()
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
@@ -387,6 +480,15 @@ namespace Tupla.Data.Context.Migrations
                     b.ToTable("WishList");
                 });
 
+            modelBuilder.Entity("Tupla.Data.Core.CodeData.Code", b =>
+                {
+                    b.HasOne("Tupla.Data.Core.Shopping.OrderDetailData.OrderDetail", "OrderDetail")
+                        .WithMany()
+                        .HasForeignKey("OrderId", "GameId", "PlatformId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Tupla.Data.Core.CreditCard.CreditCard", b =>
                 {
                     b.HasOne("Tupla.Data.Core.CustomerData.Customer", "Customers")
@@ -447,6 +549,30 @@ namespace Tupla.Data.Context.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Tupla.Data.Core.PromotionData.Promotion", b =>
+                {
+                    b.HasOne("Tupla.Data.Core.PromotionData.EventPromotion", "EventPromotion")
+                        .WithMany()
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Tupla.Data.Core.PlatformData.PlatformOfGame", "PlatformOfGame")
+                        .WithMany()
+                        .HasForeignKey("GameId", "PlatformId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Tupla.Data.Core.ReviewData.Review", b =>
+                {
+                    b.HasOne("Tupla.Data.Core.Shopping.OrderDetailData.OrderDetail", "OrderDetail")
+                        .WithMany()
+                        .HasForeignKey("OrderId", "GameId", "PlatformId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Tupla.Data.Core.Shopping.CartData.Cart", b =>
                 {
                     b.HasOne("Tupla.Data.Core.CustomerData.Customer", "Customers")
@@ -481,9 +607,7 @@ namespace Tupla.Data.Context.Migrations
                 {
                     b.HasOne("Tupla.Data.Core.CustomerData.Customer", "Customers")
                         .WithMany()
-                        .HasForeignKey("Username")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Username");
                 });
 
             modelBuilder.Entity("Tupla.Data.Core.Tag.GameTag", b =>

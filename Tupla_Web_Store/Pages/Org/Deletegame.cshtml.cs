@@ -48,6 +48,7 @@ namespace Tupla_Web_Store.Pages.Org
 
         public async Task<IActionResult> OnPostAsync()
         {
+            Game = db.GetById(Game.GameId);
             if (Game == null) return RedirectToPage("../NotFound");
             db.Delete(Game);
             await db.CommitAsync();

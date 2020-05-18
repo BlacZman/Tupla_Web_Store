@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Tupla.Data.Core.CustomerData;
 
@@ -11,7 +12,7 @@ namespace Tupla.Data.Core.Shopping.TransactionData
     {
         [Key]
         public int OrderId { get; set; }
-        [Required]
+        [AllowNull]
         [ForeignKey("Customers")]
         [MaxLength(256)]
         public string Username { get; set; }

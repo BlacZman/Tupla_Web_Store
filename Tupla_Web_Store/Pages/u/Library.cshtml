@@ -4,6 +4,63 @@
     ViewData["Title"] = "Library";
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
+<style>
+    a 
+    {
+        color: inherit;
+        text-decoration: inherit;
+    }
+    a:hover 
+    {
+        color: inherit;
+        text-decoration: inherit;
+    }
+</style>
 
 <h1>Library</h1>
+@if (Model.cdkeys.Any())
+{
+    <div id="accordion">
+        @foreach (var item in Model.cdkeys)
+        {
+            <div class="card">
+                <button data-toggle="collapse" data-target="#collapse-@item.Key.GameId"
+                        aria-expanded="false" aria-controls="Control-@item.Key.GameId">
+                    <div class="card-header">
+                        <h4>
+                            @item.Key.GameName
+                        </h4>
+                    </div>
+                </button>
 
+                <div class="collapse" id="collapse-@item.Key.GameId" >
+                    <ul class="card-body">
+                        @foreach(var list in item.Value)
+                        {
+                            <li class="row">
+                                <div class="col">
+                                    @list.CodeId
+                                </div>
+                                <div class="col-2">
+                                    <a class="btn btn-primary" asp-page="./Order" asp-route-orderid="@list.OrderId">
+                                        Order detail
+                                    </a>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+    </div>
+}
+else 
+{
+    <div class="container">
+        There is none in your library.
+        <br />
+        <a class="btn btn-primary" asp-page="/g/Index">
+            Go to store
+        </a>
+    </div>
+}

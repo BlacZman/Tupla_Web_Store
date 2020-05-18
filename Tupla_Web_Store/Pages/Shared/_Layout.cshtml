@@ -9,18 +9,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - CODE GAME STORE</title>
     <link href="https://fonts.googleapis.com/css2?family=Mitr&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/lib/bootstrap/4.5.0/content/Content/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/4.5.0/content/Content/_Layout.css" />
+    <!-- Syncfusion Essential JS 2 Styles -->
+    <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/material.css" />
+    <link href="~/lib/fontawesome-free-5.13.0-web/css/all.css" rel="stylesheet">
     <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/_Layout.css" />
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/Index.css" />
+
     </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-    </environment>
+
 </head>
 <body class="body-bg">
     <header>
@@ -35,8 +34,8 @@
                     <ul class="navbar-nav flex-grow-1">
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark mitr-font" asp-area="" asp-page="">
+                            <li class="nav-item" id="element">
+                                <a class="nav-link text-dark mitr-font" asp-area="" asp-page="/u/Library">
                                     <span class="fas fa-archive"></span> คลัง
                                 </a>
                             </li>
@@ -69,20 +68,25 @@
         </div>
     </footer>
 
-    <environment include="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/js/jquery.backstretch.min.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-        <script src="https://kit.fontawesome.com/ba8c526c07.js" crossorigin="anonymous"></script>
+    <script src="~/lib/jquery/3.5.1/Content/Scripts/jquery-3.5.1.js"></script>
+    <script src="~/js/jquery.backstretch.min.js"></script>
+    <script src="~/lib/popper.js/1.16.1/content/Scripts/popper.js"></script>
+    <script src="~/lib/bootstrap/4.5.0/content/Scripts/bootstrap.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <!--script src="https://kit.fontawesome.com/ba8c526c07.js" crossorigin="anonymous"></!--script>
 
-        <script src="~/js/script.js"></script>
-        <script src="~/js/wow.min.js"></script>
+    <!-- Syncfusion Essential JS 2 Scripts -->
+    <script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
+
+    <script src="~/js/script.js"></script>
+    <script src="~/js/wow.min.js"></script>
+    <script defer src="~/lib/fontawesome-free-5.13.0-web/js/all.js"></script>
+    <environment include="Development">
 
     </environment>
 
     @RenderSection("Scripts", required: false)
+    <!-- Syncfusion Essential JS 2 ScriptManager -->
+    <ejs-scripts></ejs-scripts>
 </body>
 </html>

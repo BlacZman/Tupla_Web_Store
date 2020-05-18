@@ -11,12 +11,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Tupla.Data.Context;
+using Tupla.Data.Core.CodeData;
 using Tupla.Data.Core.CompanyData;
 using Tupla.Data.Core.CreditCard;
 using Tupla.Data.Core.CustomerData;
 using Tupla.Data.Core.GameData;
 using Tupla.Data.Core.PictureData;
 using Tupla.Data.Core.PlatformData;
+using Tupla.Data.Core.PromotionData;
+using Tupla.Data.Core.ReviewData;
 using Tupla.Data.Core.Shopping.CartData;
 using Tupla.Data.Core.Shopping.OrderDetailData;
 using Tupla.Data.Core.Shopping.TransactionData;
@@ -55,6 +58,10 @@ namespace Tupla_Web_Store
             services.AddScoped<ICart, SqlCartData>();
             services.AddScoped<IOrderDetail, SqlOrderDetailData>();
             services.AddScoped<ITransaction, SqlTransactionData>();
+            services.AddScoped<IReview, SqlReviewData>();
+            services.AddScoped<ICode, SqlCodeData>();
+            services.AddScoped<IEventPromotion, SqlEventPromotionData>();
+            services.AddScoped<IPromotion, SqlPromotionData>();
             services.AddRazorPages();
 
             services.Configure<IdentityOptions>(options =>
@@ -93,6 +100,7 @@ namespace Tupla_Web_Store
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MjU1MTQ2QDMxMzgyZTMxMmUzMGlYNUNPMUhuZzB4bGU5YzZWR0txelByUThPVjVzUEE3OVpuajFPUE9meUU9");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

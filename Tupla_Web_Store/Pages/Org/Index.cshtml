@@ -32,7 +32,7 @@
                         @Html.DisplayFor(modelItem => item.Key.Price)
                     </div>
                     <div class="btn-group col-xl-4  my-auto">
-                        <a class="btn btn-secondary">Discount</a>
+                        <a class="btn btn-secondary" asp-page="./RegisterDiscount" asp-route-gameid="@item.Key.GameId">Discount</a>
                         <a class="btn btn-primary" asp-page="./Editgame" asp-route-id="@item.Key.GameId">Edit</a>
                         <a class="btn btn-danger" asp-page="./Deletegame" asp-route-id="@item.Key.GameId">Delete</a>
                     </div>

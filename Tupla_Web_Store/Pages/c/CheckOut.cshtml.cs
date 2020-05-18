@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Tupla.Data.Context;
+using Tupla.Data.Core.CodeData;
 using Tupla.Data.Core.CreditCard;
 using Tupla.Data.Core.GameData;
 using Tupla.Data.Core.PlatformData;
@@ -30,6 +31,7 @@ namespace Tupla_Web_Store.Pages.c
         private readonly ICart cartdb;
         private readonly IOrderDetail orderdetaildb;
         private readonly ITransaction transactiondb;
+        private readonly ICode codedb;
 
         public CheckOutModel(UserManager<User> userManager,
             TuplaContext Context,
@@ -39,7 +41,8 @@ namespace Tupla_Web_Store.Pages.c
             ICreditCard creditdb,
             ICart cartdb,
             IOrderDetail orderdetaildb,
-            ITransaction transactiondb)
+            ITransaction transactiondb,
+            ICode codedb)
         {
             this.userManager = userManager;
             context = Context;
@@ -50,6 +53,7 @@ namespace Tupla_Web_Store.Pages.c
             this.cartdb = cartdb;
             this.orderdetaildb = orderdetaildb;
             this.transactiondb = transactiondb;
+            this.codedb = codedb;
         }
         public IEnumerable<SelectListItem> CreditCards { get; set; }
         public Dictionary<Cart, Game> Summary { get; set; }
@@ -105,8 +109,22 @@ namespace Tupla_Web_Store.Pages.c
                             };
                             orderdetaildb.Add(orderdetail);
                             await orderdetaildb.CommitAsync();
-                        }
 
+                            //Generate code
+                            for(var i = 0; i < orderdetail.Quantity; i++)
+                            {
+                                var codeidgenerated = Guid.NewGuid().ToString();
+                                var code = new Code
+                                {
+                                    CodeId = codeidgenerated,
+                                    OrderId = orderdetail.OrderId,
+                                    GameId = orderdetail.GameId,
+                                    PlatformId = orderdetail.PlatformId
+                                };
+                                codedb.Add(code);
+                                await codedb.CommitAsync();
+                            }
+                        }
 
                         cartdb.DeleteItemInCart(username);
                         await cartdb.CommitAsync();
@@ -120,7 +138,7 @@ namespace Tupla_Web_Store.Pages.c
                     }
                 }
             });
-            return RedirectToPage("../g/Index");
+            return RedirectToPage("../u/Library");
         }
     }
 }

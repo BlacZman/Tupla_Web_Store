@@ -14,6 +14,9 @@ using Tupla.Data.Context;
 using Tupla.Data.Core.GameData;
 using Tupla.Data.Core.PictureData;
 using Tupla.Data.Core.PlatformData;
+using Tupla.Data.Core.ReviewData;
+using Tupla.Data.Core.Shopping.OrderDetailData;
+using Tupla.Data.Core.Shopping.TransactionData;
 using Tupla.Data.Core.Tag;
 using Tupla.Data.Core.WishList;
 using Tupla_Web_Store.Areas.Identity.Data;
@@ -32,8 +35,12 @@ namespace Tupla_Web_Store.Pages.g
         private readonly IPlatformOfGame gamePlatformdb;
         private readonly ITag dbTag;
         private readonly IWishList wishdb;
+        private readonly ITransaction transdb;
+        private readonly IOrderDetail orderdetaildb;
+        private readonly IReview reviewdb;
+        private readonly ICustomerPicture userpicdb;
 
-        public DetailModel(UserManager<Areas.Identity.Data.User> userManager,
+        public DetailModel(UserManager<User> userManager,
             TuplaContext context,
             IGame db,
             IGamePicture picdb,
@@ -41,7 +48,11 @@ namespace Tupla_Web_Store.Pages.g
             IPlatform platformdb,
             IPlatformOfGame gamePlatformdb,
             ITag dbTag,
-            IWishList wishdb)
+            IWishList wishdb,
+            ITransaction transdb,
+            IOrderDetail orderdetaildb,
+            IReview reviewdb,
+            ICustomerPicture userpicdb)
         {
             this.userManager = userManager;
             this.context = context;
@@ -52,6 +63,10 @@ namespace Tupla_Web_Store.Pages.g
             this.gamePlatformdb = gamePlatformdb;
             this.dbTag = dbTag;
             this.wishdb = wishdb;
+            this.transdb = transdb;
+            this.orderdetaildb = orderdetaildb;
+            this.reviewdb = reviewdb;
+            this.userpicdb = userpicdb;
         }
         [BindProperty]
         public Game Game { get; set; }
@@ -65,6 +80,11 @@ namespace Tupla_Web_Store.Pages.g
         public WishList wish { get; set; }
         public List<Tag> userTag { get; set; }
         public List<KeyValuePair<string, int>> list { get; set; }
+        public IEnumerable<GamePicture> gamePicture { get; set; }
+        [BindProperty]
+        public Review yourReview { get; set; }
+        public IEnumerable<ReviewUserModel> ReviewList { get; set; }
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -80,8 +100,18 @@ namespace Tupla_Web_Store.Pages.g
             }
             await Task.Run(async () =>
             {
+                //Picture
                 var GamePicInfo = picdb.GetIconById(Game.GameId);
-                imgDisplay = GamePicInfo == null ? "~/img/notfound.jpg" : @"~/img/" + GamePicInfo.Path;
+                imgDisplay = GamePicInfo == null ? "~/img/notfound.jpg" : "~/img/" + GamePicInfo.Path;
+                gamePicture = picdb.GetById(Game.GameId, ImageType.Info);
+                gamePicture = gamePicture.Any() ? gamePicture : gamePicture.Append(new GamePicture 
+                { 
+                    GameId = Game.GameId,
+                    imageType = ImageType.Info,
+                    Path = "notfound.jpg"
+                });
+
+                //Tag
                 IEnumerable<GameTag> populargametag = dbgametag.GetPopularTagOfGame(Game.GameId);
                 if(populargametag.Any())
                 {
@@ -96,6 +126,8 @@ namespace Tupla_Web_Store.Pages.g
                     list = dict.ToList();
                     list.Sort((p1, p2) => p2.Value.CompareTo(p1.Value));
                 }
+
+                //Platform
                 var platform = platformdb.GetAllByName("");
                 var listgame = gamePlatformdb.GetAllSupportedPlatform(Game.GameId);
                 var query = from r in listgame
@@ -104,6 +136,8 @@ namespace Tupla_Web_Store.Pages.g
                             orderby s.Platform_name
                             select s;
                 ListOfSupportedPlatform = new SelectList(query, "PlatformId", "Platform_name");
+
+                //Initialize
                 AddTag = new AddTagFormModel();
                 DeleteTag = new DelTagFormModel();
             });
@@ -119,6 +153,62 @@ namespace Tupla_Web_Store.Pages.g
                     {
                         Tag getTag = await dbTag.GetByIdAsync(item.TagId);
                         userTag.Add(getTag);
+                    }
+                }
+
+                //Review & check if there is any order of this user
+                IEnumerable<Review> Reviews = reviewdb.GetByGameId(Game.GameId);
+                IEnumerable<Transac> transactioninfo;
+                if (username != null) transactioninfo = transdb.GetByUsername(username);
+                else transactioninfo = new List<Transac> { };
+                OrderDetail checkReview = null;
+                if (transactioninfo.Any())
+                {
+                    foreach(var tinfo in transactioninfo)
+                    {
+                        var orderdetail = orderdetaildb.GetByOrderId(tinfo.OrderId);
+                        if(orderdetail.Any())
+                        {
+                            foreach(var orderinfo in orderdetail)
+                            {
+                                if(orderinfo.GameId == Game.GameId)
+                                {
+                                    checkReview = orderinfo;
+                                    break;
+                                }
+                            }
+                        }
+                        if (checkReview != null) break;
+                    }
+                }
+                yourReview = null;
+                ReviewList = new List<ReviewUserModel> { };
+                if (checkReview != null)
+                {
+                    yourReview = new Review
+                    {
+                        GameId = checkReview.GameId,
+                        OrderId = checkReview.OrderId,
+                        PlatformId = checkReview.PlatformId
+                    };
+                    if(Reviews.Any())
+                    {
+                        yourReview = reviewdb.GetById(checkReview.OrderId, checkReview.GameId, checkReview.PlatformId) ?? yourReview;
+                        var reviewuserlist = new List<ReviewUserModel> { };
+                        foreach (var reviewinfo in Reviews)
+                        {
+                            var name = transdb.GetById(reviewinfo.OrderId).Username;
+                            var img = userpicdb.GetIconById(name);
+                            var imgpath = img == null ? "~/img/notfound.jpg" : "~/img/" + img.Path;
+                            var reviewuser = new ReviewUserModel
+                            {
+                                Review = reviewinfo,
+                                Username = name,
+                                Path = imgpath
+                            };
+                            reviewuserlist.Add(reviewuser);
+                        }
+                        ReviewList = reviewuserlist;
                     }
                 }
             });
@@ -196,6 +286,12 @@ namespace Tupla_Web_Store.Pages.g
             {
                 return RedirectToPage(Url.Content("~/NotFound"));
             }
+        }
+        public class ReviewUserModel
+        {
+            public Review Review { get; set; }
+            public string Username { get; set; }
+            public string Path { get; set; }
         }
     }
 }

@@ -3,12 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Transactions;
+using Tupla.Data.Core.CodeData;
 using Tupla.Data.Core.CompanyData;
 using Tupla.Data.Core.CreditCard;
 using Tupla.Data.Core.CustomerData;
 using Tupla.Data.Core.GameData;
 using Tupla.Data.Core.PictureData;
 using Tupla.Data.Core.PlatformData;
+using Tupla.Data.Core.PromotionData;
+using Tupla.Data.Core.ReviewData;
 using Tupla.Data.Core.Shopping.CartData;
 using Tupla.Data.Core.Shopping.OrderDetailData;
 using Tupla.Data.Core.Shopping.TransactionData;
@@ -41,6 +44,13 @@ namespace Tupla.Data.Context
         public DbSet<Cart> Cart { get; set; }
         public DbSet<OrderDetail> OrderDetail { get; set; }
         public DbSet<Transac> Transaction { get; set; }
+        //Review
+        public DbSet<Review> Review { get; set; }
+        //Code
+        public DbSet<Code> Code { get; set; }
+        //Promotion
+        public DbSet<EventPromotion> EventPromotion { get; set; }
+        public DbSet<Promotion> Promotion { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -54,6 +64,8 @@ namespace Tupla.Data.Context
                 HasKey(c => new { c.OrderId, c.GameId, c.PlatformId });
             modelBuilder.Entity<Cart>().
                 HasKey(c => new { c.GameId, c.PlatformId, c.CartId });
+            modelBuilder.Entity<Review>().
+               HasKey(c => new { c.OrderId, c.GameId, c.PlatformId });
         }
     }
 }

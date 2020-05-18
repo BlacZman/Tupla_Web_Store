@@ -260,7 +260,7 @@ namespace Tupla.Data.Context.Migrations
                 {
                     OrderId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Username = table.Column<string>(maxLength: 256, nullable: false),
+                    Username = table.Column<string>(maxLength: 256, nullable: true),
                     OrderDate = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
@@ -271,7 +271,7 @@ namespace Tupla.Data.Context.Migrations
                         column: x => x.Username,
                         principalTable: "Customers",
                         principalColumn: "UserName",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -297,7 +297,7 @@ namespace Tupla.Data.Context.Migrations
                         columns: x => new { x.GameId, x.PlatformId },
                         principalTable: "PlatformOfGame",
                         principalColumns: new[] { "GameId", "PlatformId" },
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

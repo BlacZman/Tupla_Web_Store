@@ -71,6 +71,7 @@ namespace Tupla_Web_Store.Pages.Org
         public PlatformOfGame newGamePlatform { get; set; }
         public IEnumerable<SelectListItem> PlatformList { get; set; }
         public IFormFile Imgfile { get; set; }
+        public IEnumerable<IFormFile> infoImg { get; set; }
         public string imgDisplay { get; set; }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
@@ -108,18 +109,51 @@ namespace Tupla_Web_Store.Pages.Org
                 string uploadsFolder = Path.Combine(env.WebRootPath, "img");
                 string uniqueFileName = Path.Combine("g", Guid.NewGuid().ToString() + "_" + Imgfile.FileName);
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                //Update database
                 await Task.Run(() =>
                 {
                     GamePicInfo.Path = uniqueFileName;
                     GamePicInfo.imageType = ImageType.Icon;
                     GamePicInfo.GameId = Game.GameId;
                 });
+                //Update database
                 picdb.AddIcon(GamePicInfo);
                 await picdb.CommitAsync();
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
                     await Imgfile.CopyToAsync(fileStream);
+                }
+            }
+            //Info images update
+            if(infoImg != null)
+            {
+                //Remove old info image
+                var oldinfo = picdb.GetById(Game.GameId, ImageType.Info);
+                foreach (var r in oldinfo)
+                {
+                    picdb.Delete(r);
+                    await picdb.CommitAsync();
+                }
+                foreach (var r in infoImg)
+                {
+                    await Task.Run( async()=>
+                    {
+                        string uploadsFolder = Path.Combine(env.WebRootPath, "img");
+                        string uniqueFileName = Path.Combine("g", Guid.NewGuid().ToString() + "_" + r.FileName);
+                        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                        var infoImage = new GamePicture
+                        {
+                            GameId = Game.GameId,
+                            imageType = ImageType.Info,
+                            Path = uniqueFileName
+                        };
+                        //update database
+                        picdb.Add(infoImage);
+                        await picdb.CommitAsync();
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await r.CopyToAsync(fileStream);
+                        }
+                    });
                 }
             }
             return RedirectToPage("../g/Index");

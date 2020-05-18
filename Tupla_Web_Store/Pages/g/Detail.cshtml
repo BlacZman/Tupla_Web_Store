@@ -4,14 +4,29 @@
 @using Microsoft.AspNetCore.Identity
 @using Tupla_Web_Store.Areas.Identity.Data
 @inject SignInManager<User> SignInManager
-
-
 @{
     ViewData["Title"] = "Detail";
     Layout = "~/Pages/Shared/_Layout.cshtml";
     Model.DeleteTag.gameid = Model.Game.GameId;
     Model.AddTag.gameid = Model.Game.GameId;
 }
+<style>
+    .testimonial-group > .row {
+        display:block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    .testimonial-group > .row > .img-fluid {
+        display: inline-block;
+        float: none;
+    }
+</style>
+<script type="text/javascript">
+    function readPath(input) {
+        $('img.profile')
+            .attr('src', input);
+    }
+</script>
 
 <div>
     <h1>@Html.DisplayFor(model => model.Game.GameName)</h1>
@@ -19,6 +34,22 @@
     <div class="row">
         <div class="col-md-8">
             <!--Video and image-->
+            @{ var first = "~/img/" + Model.gamePicture.First().Path; }
+            <div class="col-md-12">
+                <img class="profile img-fluid" src="@first" asp-append-version="true"
+                     style="width:760px;height:400px" />
+            </div>
+            <br />
+            <div class="container testimonial-group">
+                <div class="row">
+                    @foreach (var item in Model.gamePicture)
+                    {
+                        var superPath = "~/img/" + item.Path;
+                        <img class="img-fluid" src="@superPath" asp-append-version="true"
+                             style="width:160px;height:108px" onclick="readPath($(this).attr('src'))" />
+                    }
+                </div>
+            </div>
         </div>
         <div class="col-md-4 card">
             <div class="card-img-top">
@@ -40,7 +71,7 @@
                     {
                         foreach (var item in Model.list.Take(6))
                         {
-                            <a class="px-2 py-1 btn-dark rounded text-white">
+                            <a class="px-2 py-1 badge badge-dark text-white">
                                 @item.Key
                             </a>
                         }
@@ -78,6 +109,7 @@
             </div>
         </div>
     </div>
+    <hr />
     <div class="row">
         @if (SignInManager.IsSignedIn(User))
         {
@@ -86,17 +118,92 @@
                 <input asp-for="@Model.wish.GameId" hidden />
                 <input asp-for="@Model.wish.Username" hidden />
                 <button class="btn btn-dark" type="submit">
-                    @if (Model.wish.Username != null){<i class="far fa-check-square"></i>} Wishlist
+                    @if (Model.wish.Username != null)
+                    {<i class="far fa-check-square"></i>} Wishlist
                 </button>
             </form>
         }
     </div>
+    @if (Model.yourReview != null)
+    {
+        <div class="row">
+            <div class="col-xl-8">
+                <!--Review this game-->
+                <h2>Review</h2>
+                <form method="post" asp-page="./ReviewControl">
+                    <input asp-for="@Model.yourReview.GameId" hidden />
+                    <input asp-for="@Model.yourReview.OrderId" hidden />
+                    <input asp-for="@Model.yourReview.PlatformId" hidden />
+                    <div class="form-group btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-primary active">
+                            <input type="radio" asp-for="@Model.yourReview.Recommended"
+                                   value="true" checked><i class="far fa-thumbs-up"></i> Recommended
+                        </label>
+                        <label class="btn btn-danger">
+                            <input type="radio" asp-for="@Model.yourReview.Recommended"
+                                   value="false"><i class="far fa-thumbs-down"></i> Not Recommended
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <textarea asp-for="@Model.yourReview.Review_Detail" class="form-control"></textarea>
+                        <span asp-validation-for="@Model.yourReview.Review_Detail" class="text-danger"></span>
+                    </div>
+                    <input type="submit" class="btn btn-success" />
+                </form>
+            </div>
+        </div>
+        <hr />
+    }
     <div class="row">
         <div class="col-xl-8">
             @Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.Game.HtmlText ?? ""))
         </div>
         <div class="col-xl-4">
 
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-xl-8">
+            <h3>Reviews</h3>
+            <hr />
+            <!--Review here-->
+            @if (Model.ReviewList.Any())
+            {
+                foreach (var item in Model.ReviewList)
+                {
+                    <div class="row">
+                        <div class="col-1">
+                            <!--Image-->
+                            <img src="@item.Path" width="30" height="30" asp-append-version="true" />
+                        </div>
+                        <div class="col-3">
+                            <!--Name-->
+                            @item.Username
+                        </div>
+                        <div class="col-8">
+                            <!--Review-->
+                            <div class="row">
+                                @if (item.Review.Recommended)
+                                {
+                                    <div>
+                                        <i class="far fa-thumbs-up"></i> Recommended
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div>
+                                        <i class="far fa-thumbs-down"></i> Not Recommended
+                                    </div>
+                                }
+                            </div>
+                            <div class="row">
+                                @item.Review.Review_Detail
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
         </div>
     </div>
 </div>

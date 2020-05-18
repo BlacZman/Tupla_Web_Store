@@ -1,0 +1,40 @@
+﻿@page
+@model Tupla_Web_Store.Pages.u.TransactionHistoryModel
+@{
+    ViewData["Title"] = "TransactionHistory";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Transaction history</h1>
+<div class="row">
+    <div class="col-sm-6">
+        <table class="table">
+            <thead>
+                <tr>
+                    <td>
+                        Order ID
+                    </td>
+                    <td>
+                        Order Date
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.carts)
+                {
+                    <tr class="container my-auto">
+                        <td>
+                            @item.OrderId
+                        </td>
+                        <td>
+                            @item.OrderDate
+                        </td>
+                        <td>
+                            <a class="btn btn-primary" asp-page="/u/Order" asp-route-orderid="@item.OrderId" >Detail</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
