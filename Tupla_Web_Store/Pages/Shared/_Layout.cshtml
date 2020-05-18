@@ -5,25 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - CODE GAME STORE</title>
     <link href="https://fonts.googleapis.com/css2?family=Mitr&display=swap" rel="stylesheet">
-    <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/_Layout.css" />
-        <link rel="stylesheet" href="~/css/Index.css"/>
-    </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-    </environment>
-    <script src="https://kit.fontawesome.com/ba8c526c07.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/_Layout.css" />
+    <link rel="stylesheet" href="~/css/Index.css" />
+
 </head>
 <body class="body-bg">
-    <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-custom-navbar border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="bg-logo" asp-area="" asp-page="/Index"></a>
+                <a class="navbar-brand bg-logo" asp-area="" asp-page="/Index"></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -50,7 +41,6 @@
                 </div>
             </div>
         </nav>
-    </header>
     <div class="container-fluid">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -64,11 +54,14 @@
     </footer>
 
     <environment include="Development">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="~/js/script.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="~/js/jquery.backstretch.min.js"></script>
         <script src="~/js/wow.min.js"></script>
+
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="https://kit.fontawesome.com/ba8c526c07.js" crossorigin="anonymous"></script>
     </environment>
 
     @RenderSection("Scripts", required: false)
