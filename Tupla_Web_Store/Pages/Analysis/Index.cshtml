@@ -1,0 +1,23 @@
+﻿@page
+@model Tupla_Web_Store.Pages.Analysis.IndexModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Analysis reports</h1>
+
+<div class="row m-auto">
+    <a class="col-6 btn btn-primary" asp-page="/Analysis/BestSeller">
+        Top 5 Best seller of all time
+    </a>
+    <a class="col-6 btn btn-primary" asp-page="/Analysis/MostWish">
+        Top 5 Games everyone wishes to have
+    </a>
+    <a class="col-6 btn btn-primary" asp-page="/Analysis/RecommendedGame">
+        Top 10 Recommended games under 300
+    </a>
+    <a class="col-6 btn btn-primary" asp-page="/Analysis/BestRating">
+        Top 5 Best game rating
+    </a>
+</div>

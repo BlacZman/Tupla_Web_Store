@@ -191,25 +191,25 @@ namespace Tupla_Web_Store.Pages.g
                         OrderId = checkReview.OrderId,
                         PlatformId = checkReview.PlatformId
                     };
-                    if(Reviews.Any())
+                    yourReview = reviewdb.GetById(checkReview.OrderId, checkReview.GameId, checkReview.PlatformId) ?? yourReview;
+                }
+                if (Reviews.Any())
+                {
+                    var reviewuserlist = new List<ReviewUserModel> { };
+                    foreach (var reviewinfo in Reviews)
                     {
-                        yourReview = reviewdb.GetById(checkReview.OrderId, checkReview.GameId, checkReview.PlatformId) ?? yourReview;
-                        var reviewuserlist = new List<ReviewUserModel> { };
-                        foreach (var reviewinfo in Reviews)
+                        var name = transdb.GetById(reviewinfo.OrderId).Username;
+                        var img = userpicdb.GetIconById(name);
+                        var imgpath = img == null ? "~/img/notfound.jpg" : "~/img/" + img.Path;
+                        var reviewuser = new ReviewUserModel
                         {
-                            var name = transdb.GetById(reviewinfo.OrderId).Username;
-                            var img = userpicdb.GetIconById(name);
-                            var imgpath = img == null ? "~/img/notfound.jpg" : "~/img/" + img.Path;
-                            var reviewuser = new ReviewUserModel
-                            {
-                                Review = reviewinfo,
-                                Username = name,
-                                Path = imgpath
-                            };
-                            reviewuserlist.Add(reviewuser);
-                        }
-                        ReviewList = reviewuserlist;
+                            Review = reviewinfo,
+                            Username = name,
+                            Path = imgpath
+                        };
+                        reviewuserlist.Add(reviewuser);
                     }
+                    ReviewList = reviewuserlist;
                 }
             });
             return Page();

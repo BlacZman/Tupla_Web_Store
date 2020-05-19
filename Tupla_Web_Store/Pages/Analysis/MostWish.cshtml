@@ -1,0 +1,34 @@
+﻿@page
+@model Tupla_Web_Store.Pages.Analysis.MostWishModel
+@{
+    ViewData["Title"] = "MostWish";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>5 Games everyone wishes to have</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <td>
+                Name
+            </td>
+            <td>
+                Count
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.test.Take(5))
+        {
+            <tr>
+                <td>
+                    @item.Key
+                </td>
+                <td>
+                    @item.Value
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

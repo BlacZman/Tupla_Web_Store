@@ -91,6 +91,7 @@ namespace Tupla_Web_Store.Pages.c
             else
             {
                 var cartitem = cartdb.GetById(gameid, platformid, username);
+                Console.WriteLine(username);
                 if (cartitem == null)
                 {
                     await Task.Run(() =>

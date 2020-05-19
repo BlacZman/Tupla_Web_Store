@@ -1,0 +1,41 @@
+﻿@page
+@model Tupla_Web_Store.Pages.Analysis.RecommendedGameModel
+@{
+    ViewData["Title"] = "RecommendedGame";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>10 Recommended games under @Model.setPrice</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <td>
+                Name
+            </td>
+            <td>
+                Price
+            </td>
+            <td>
+                Review percentage
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.test.Take(10))
+        {
+            var percent = Math.Round(item.Value * 100, 2, MidpointRounding.ToEven);
+            <tr>
+                <td>
+                    @item.Key.GameName
+                </td>
+                <td>
+                    @item.Key.Price
+                </td>
+                <td>
+                    @percent %
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

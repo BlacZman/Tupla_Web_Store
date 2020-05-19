@@ -234,12 +234,12 @@ namespace Tupla.Data.Context.Migrations
                     {
                         GameId = table.Column<int>(nullable: false),
                         PlatformId = table.Column<int>(nullable: false),
-                        CartId = table.Column<string>(maxLength: 256, nullable: true),
+                        CartId = table.Column<string>(maxLength: 256, nullable: false),
                         Quantity = table.Column<int>(nullable: false)
                     },
                     constraints: table =>
                     {
-                        table.PrimaryKey("PK_Cart", x => new { x.GameId, x.PlatformId });
+                        table.PrimaryKey("PK_Cart", x => new { x.GameId, x.PlatformId, x.CartId });
                         table.ForeignKey(
                             name: "FK_Cart_PlatformOfGame_GameId_PlatformId",
                             columns: x => new { x.GameId, x.PlatformId },
