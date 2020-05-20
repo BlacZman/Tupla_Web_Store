@@ -10,7 +10,8 @@ How to run these thing?!
 - Open 'Package Manager Console'
 - Find the Default project, that's at the top in command-line window.
 - select Default project to 'Tupla_Web_Store'
-- In command-line, type "Drop-Database -Context DataContext" [If you already have this 'Tupla' database, Otherwise don't do this step]
+[If you already have this 'Tupla' database, Otherwise don't do this step]
+- In command-line, type "Drop-Database -Context DataContext"
 - In command-line, type "Update-Database -Context DataContext"
 - Find the Default project, that's at the top in command-line window.
 - select Default project to 'Tupla.Data.Context'
