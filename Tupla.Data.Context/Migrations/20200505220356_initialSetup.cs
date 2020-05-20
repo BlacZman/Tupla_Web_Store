@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Tupla.Data.Context.Migrations
 {
-    public partial class initialsetup : Migration
+    public partial class initialSetup : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -300,6 +300,93 @@ namespace Tupla.Data.Context.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            //Review
+            migrationBuilder.CreateTable(
+                name: "Review",
+                columns: table => new
+                {
+                    OrderId = table.Column<int>(nullable: false),
+                    GameId = table.Column<int>(nullable: false),
+                    PlatformId = table.Column<int>(nullable: false),
+                    Recommended = table.Column<bool>(nullable: false),
+                    Review_Detail = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Review", x => new { x.OrderId, x.GameId, x.PlatformId });
+                    table.ForeignKey(
+                        name: "FK_Review_OrderDetail_OrderId_GameId_PlatformId",
+                        columns: x => new { x.OrderId, x.GameId, x.PlatformId },
+                        principalTable: "OrderDetail",
+                        principalColumns: new[] { "OrderId", "GameId", "PlatformId" },
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            //Code
+            migrationBuilder.CreateTable(
+               name: "Code",
+               columns: table => new
+               {
+                   CodeId = table.Column<string>(nullable: false),
+                   OrderId = table.Column<int>(nullable: false),
+                   GameId = table.Column<int>(nullable: false),
+                   PlatformId = table.Column<int>(nullable: false)
+               },
+               constraints: table =>
+               {
+                   table.PrimaryKey("PK_Code", x => x.CodeId);
+                   table.ForeignKey(
+                       name: "FK_Code_OrderDetail_OrderId_GameId_PlatformId",
+                       columns: x => new { x.OrderId, x.GameId, x.PlatformId },
+                       principalTable: "OrderDetail",
+                       principalColumns: new[] { "OrderId", "GameId", "PlatformId" },
+                       onDelete: ReferentialAction.Cascade);
+               });
+
+            //Promotion
+            migrationBuilder.CreateTable(
+                name: "EventPromotion",
+                columns: table => new
+                {
+                    EventId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Event_name = table.Column<string>(maxLength: 100, nullable: false),
+                    Event_start_date = table.Column<DateTime>(nullable: false),
+                    Event_end_date = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EventPromotion", x => x.EventId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Promotion",
+                columns: table => new
+                {
+                    PromotionId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GameId = table.Column<int>(nullable: false),
+                    PlatformId = table.Column<int>(nullable: false),
+                    Percentage = table.Column<int>(nullable: false),
+                    EventId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Promotion", x => x.PromotionId);
+                    table.ForeignKey(
+                        name: "FK_Promotion_EventPromotion_EventId",
+                        column: x => x.EventId,
+                        principalTable: "EventPromotion",
+                        principalColumn: "EventId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Promotion_PlatformOfGame_GameId_PlatformId",
+                        columns: x => new { x.GameId, x.PlatformId },
+                        principalTable: "PlatformOfGame",
+                        principalColumns: new[] { "GameId", "PlatformId" },
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_CompanyPicture_CompanyId",
                 table: "CompanyPicture",
@@ -358,6 +445,21 @@ namespace Tupla.Data.Context.Migrations
                 name: "IX_Transaction_Username",
                 table: "Transaction",
                 column: "Username");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Code_OrderId_GameId_PlatformId",
+                table: "Code",
+                columns: new[] { "OrderId", "GameId", "PlatformId" });
+
+            migrationBuilder.CreateIndex(
+               name: "IX_Promotion_EventId",
+               table: "Promotion",
+               column: "EventId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Promotion_GameId_PlatformId",
+                table: "Promotion",
+                columns: new[] { "GameId", "PlatformId" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -400,6 +502,18 @@ namespace Tupla.Data.Context.Migrations
 
             migrationBuilder.DropTable(
                 name: "Platform");
+
+            migrationBuilder.DropTable(
+                name: "Review");
+
+            migrationBuilder.DropTable(
+                name: "Code");
+
+            migrationBuilder.DropTable(
+                name: "Promotion");
+
+            migrationBuilder.DropTable(
+                name: "EventPromotion");
         }
     }
 }
