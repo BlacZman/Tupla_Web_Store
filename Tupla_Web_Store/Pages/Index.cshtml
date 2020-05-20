@@ -4,7 +4,65 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+    <body>
+
+        <div class="container">
+
+            <div id="carousel-index" class="carousel slide carousel-index-css" data-ride="carousel">
+
+                <ul class="carousel-indicators">
+                    @{int i = 0;
+                        @foreach (var item in Model.piclist.Take(5))
+                        {
+                            if (i == 0)
+                            {
+                                <li data-target="#carousel-index" data-slide-to="@i" class="active"></li>
+                            }
+                            else
+                            {
+                                <li data-target="#carousel-index" data-slide-to="@i"></li>
+                            }
+                            i++;
+                        }
+                    }
+                </ul>
+
+
+                <div class="carousel-inner">
+                    @{bool isFirst = true;
+                        @foreach (var item in Model.piclist.Take(5))
+                        {
+                            if (isFirst)
+                            {
+                                <div class="carousel-item active">
+                                    <a class="pb-1" asp-page="/g/Detail" asp-route-id="@item.Key.GameId">
+                                        <img class="img-fluid" src="@item.Value" asp-append-version="true"
+                                             style="width:100%;height:500px" />
+                                    </a>
+                                </div>
+                                isFirst = false;
+                            }
+                            else
+                            {
+                                <div class="carousel-item">
+                                    <a class="pb-1" asp-page="/g/Detail" asp-route-id="@item.Key.GameId">
+                                        <img class="img-fluid" src="@item.Value" asp-append-version="true"
+                                             style="width:100%;height:500px" />
+                                    </a>
+                                </div>
+                            }
+                        }
+                    }
+                </div>
+
+                <!-- Left and right controls -->
+                <a class="carousel-control-prev" href="#carousel-index" data-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </a>
+                <a class="carousel-control-next" href="#carousel-index" data-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </a>
+
+            </div>
+        </div>
+    </body>

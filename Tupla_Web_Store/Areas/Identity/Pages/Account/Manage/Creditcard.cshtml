@@ -1,0 +1,48 @@
+﻿@page
+@model Tupla_Web_Store.Areas.Identity.Pages.Account.Manage.CreditcardModel
+@inject UserManager<User> userManager
+@{
+    ViewData["Title"] = "Payment method";
+    ViewData["ActivePage"] = ManageNavPages.CreditCard;
+}
+
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+<h4>@ViewData["Title"]</h4>
+<div class="row">
+    <div class="col-md-12">
+        @foreach (var item in Model.credit)
+        {
+            Model.Credit.CreditId = item.CreditId;
+            Model.Credit.Username = item.Username;
+            <div class="row">
+                <form id="profile-form" method="post">
+                    <div class="input-group my-auto">
+                        <div class="col-9">
+                            <span class="col-12  my-auto">@item.CreditId</span>
+                        </div>
+                        <input asp-for="@Model.Credit.CreditId" hidden />
+                        <input asp-for="@Model.Credit.Username" hidden />
+                        <div class="col-1">
+                            <input class="btn-danger" type="submit" value="&times;"
+                                   style="width:30px; height:30px" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        }
+        <form id="profile-form" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="input-group my-auto">
+                @{ Model.Credit.Username = userManager.GetUserName(User); Model.Credit.CreditId = null; }
+
+                <input asp-for="@Model.Credit.Username" hidden />
+                <div class="form-group">
+                    <label asp-for="@Model.Credit.CreditId"></label>
+                    <input asp-for="@Model.Credit.CreditId" class="form-control" />
+                    <span asp-validation-for="@Model.Credit.CreditId" class="text-danger"></span>
+                </div>
+            </div>
+            <input id="update-profile-button" type="submit" class="btn btn-primary" value="Save">
+        </form>
+    </div>
+</div>

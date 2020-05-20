@@ -1,0 +1,72 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Tupla_Web_Store.Areas.Identity.Data
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@inject Tupla.Data.Core.PictureData.ICustomerPicture picdb
+@inject Tupla.Data.Core.Shopping.CartData.ICart cartdb
+@inject Tupla.Data.Core.WishList.IWishList wishdb
+@{ 
+    var Username = UserManager.GetUserName(User);
+    var imgpath = picdb.GetIconById(Username);
+    int count = cartdb.GetByCartId(Username).Count();
+    int countwish = wishdb.GetWishListsByUsername(Username).Count();
+}
+<ul class="nav-float-right">
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item my-auto">
+        <a class="nav-link text-dark mitr-font position-relative" asp-page="/c/Index">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="e-badge e-badge-success e-badge-overlap e-badge-notification e-badge-circle">@count</span>
+        </a>
+        
+    </li>
+    <li class="nav-item">
+        <div class="dropdown show">
+            @if (imgpath != null)
+            {
+                <img class="dropdown-toggle rounded-circle" role="button" id="dropdownMenuLink"
+                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src="~/img/@imgpath.Path"
+                     alt="Hello @Username!" asp-append-version="true"
+                     width="40" height="40" />
+
+            }
+            else
+            {
+                <img class="dropdown-toggle rounded-circle" role="button" id="dropdownMenuLink"
+                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src="~/img/notfound.jpg"
+                     alt="Hello @Username!" asp-append-version="true"
+                     width="40" height="40" />
+            }
+
+        <div class="dropdown-menu dropdown-menu-right mx-auto" aria-labelledby="dropdownMenuLink">
+            <!--Dropdown item-->
+            <a id="manage" class="dropdown-item nav-link text-dark mitr-font"
+               asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                Manage account
+            </a>
+            <a class="dropdown-item nav-link text-dark mitr-font position-relative" asp-page="/u/Wishlist">
+                Wishlist <span class="e-badge e-badge-primary e-badge-pill">@countwish</span>
+            </a>
+            <a class="dropdown-item nav-link text-dark mitr-font" asp-page="/u/TransactionHistory">
+                Order history
+            </a>
+            <form id="logoutForm" class="form-inline" asp-area="Identity"
+                  asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
+                <button id="logout" type="submit" class="dropdown-item nav-link btn btn-link text-dark mitr-font mr-auto">Logout</button>
+            </form>
+        </div>
+        </div>
+    </li>
+}
+else
+{
+    <li class="nav-item my-auto">
+        <a class="nav-link text-dark mitr-font" id="register" asp-area="Identity" asp-page="/Account/Register"><span class="fas fa-user"></span> ลงทะเบียน</a>
+    </li>
+    <li class="nav-item my-auto">
+        <a class="nav-link text-dark mitr-font" id="login" asp-area="Identity" asp-page="/Account/Login"><span class="fas fa-sign-in-alt"></span> เข้าสู่ระบบ</a>
+    </li>
+}
+</ul>

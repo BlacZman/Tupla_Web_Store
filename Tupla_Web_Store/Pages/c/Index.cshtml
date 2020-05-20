@@ -1,0 +1,72 @@
+﻿@page
+@model Tupla_Web_Store.Pages.c.IndexModel
+
+@{
+    ViewData["Title"] = "Cart";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+@inject Tupla.Data.Core.PlatformData.IPlatform platformdb
+
+@if (Model.StatusItem != null)
+{
+    <div class="alert alert-info">@Model.StatusItem</div>
+}
+<h1>Your Cart</h1>
+
+@if (Model.piclist.Any())
+{
+    foreach (var item in Model.piclist)
+    {
+        <div class="row btn-outline-dark pb-1">
+            <div class="col-sm-2">
+                <!--Image 16:9 192px * 108px-->
+                <a asp-page="../g/Detail" asp-route-id="@item.Value.GameId">
+                    <img class="rounded img-fluid" src="@item.Key.picture" asp-append-version="true"
+                         style="width:100%;height:90px" />
+                </a>
+            </div>
+            <div class="col-sm-3 my-auto">
+                <a asp-page="../g/Detail" asp-route-id="@item.Value.GameId">
+                    @Html.DisplayFor(modelItem => item.Value.GameName)
+                </a>
+            </div>
+            <div class="col-3 btn-group my-auto">
+                <!--Manipulate price-->
+                -%<!--Discount in here-->
+                @{ var priceQuantity = item.Value.Price * @item.Key.cartitem.Quantity; }
+                @priceQuantity
+            </div>
+            @{ string platform = platformdb.GetById(item.Key.cartitem.PlatformId).Platform_name; }
+            <div class="col-sm-2 my-auto">
+                @platform
+                <form method="post">
+                    <input asp-for="@Model.ModifyCart.GameId" value="@item.Key.cartitem.GameId" hidden />
+                    <input asp-for="@Model.ModifyCart.PlatformId" value="@item.Key.cartitem.PlatformId" hidden />
+                    <input id="quantity" class="col-xl-6" asp-for="@Model.ModifyCart.Quantity"
+                           value="@item.Key.cartitem.Quantity" min="1" max="100" />
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+            </div>
+            <div class="col-sm-2 m-auto">
+                <form method="post" asp-page="./DeleteItem">
+                    <input asp-for="@Model.ModifyCart.GameId" value="@item.Key.cartitem.GameId" hidden />
+                    <input asp-for="@Model.ModifyCart.PlatformId" value="@item.Key.cartitem.PlatformId" hidden />
+                    <input type="submit" class="btn-outline-danger border-0 rounded font-weight-bold"
+                           style="font-size:30px" value="&times;" />
+                </form>
+            </div>
+        </div>
+    }
+    <div class="row">
+        <a class="btn btn-primary" asp-page="../g/Index">Back to game</a>
+        <a class="btn btn-primary ml-auto" asp-page="./CheckOut">Checkout</a>
+    </div>
+}
+else
+{
+    <div class="col-12 m-auto">
+        There's none in your cart.
+    </div>
+    <a class="btn btn-primary" asp-page="../g/Index">Back to game</a>
+}
+

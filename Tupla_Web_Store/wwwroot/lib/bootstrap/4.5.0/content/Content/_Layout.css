@@ -1,0 +1,51 @@
+.bg-custom-navbar {
+    background-color: #71c9ce !important;
+}
+
+.nav-item {
+    margin-left: 7px;
+    margin-right: 7px;
+}
+
+.bg-logo {
+    background: url(/img/logo/icon.png) 50% no-repeat;
+    width: 10em;
+    height: 3em;
+    position: relative;
+    float: left;
+    background-size: 140px;
+}
+
+body {
+    font-family: 'Mitr', sans-serif;
+}
+
+.mitr-font {
+    font-family: 'Mitr', sans-serif;
+}
+
+.body-bg {
+    background-color: #e3fdfd;
+    width: 100%;
+    height: 100%;
+}
+
+.nav-float-right {
+    float: right;
+    display: flex;
+    margin-top: 1em;
+    list-style: none;
+}
+
+.text-custom-color {
+    color: #ffffff;
+}
+
+.row-img {
+    display: flex;
+}
+
+.column-img {
+    flex: 33.33%;
+    padding: 5px;
+}

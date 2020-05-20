@@ -1,0 +1,57 @@
+﻿@page "{orderid:int}"
+@model Tupla_Web_Store.Pages.u.OrderModel
+@{
+    ViewData["Title"] = "Order";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+@inject Tupla.Data.Core.PlatformData.IPlatform platformdb
+
+<h1>Order ID: @Model.OrderId</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <td>
+                Game
+            </td>
+            <td>
+                Price
+            </td>
+            <td>
+                Quantity
+            </td>
+            <td>
+                Platform
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Summary)
+        {
+            <tr>
+                <td>
+                    @item.Value.GameName
+                </td>
+                <td>
+                    @item.Value.Price
+                </td>
+                <td>
+                    @item.Key.Quantity
+                </td>
+                <td>
+                    @platformdb.GetById(item.Key.PlatformId).Platform_name
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<hr />
+<span>Total : @Model.Total</span>
+<hr />
+<div class="row">
+    <div class="col-3 mr-auto">
+        <a class="btn btn-primary" asp-page="/u/Library">Back to library</a>
+    </div>
+    <div class="col-3">
+        <a class="btn btn-primary" asp-page="/u/TransactionHistory">Back to order history</a>
+    </div>
+</div>

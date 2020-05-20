@@ -1,0 +1,41 @@
+﻿@page
+@model Tupla_Web_Store.Pages.Analysis.BestRatingModel
+@{
+    ViewData["Title"] = "BestRating";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>5 Best game rating</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <td>
+                Name
+            </td>
+            <td>
+                Price
+            </td>
+            <td>
+                Review percentage
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.test.Take(5))
+        {
+            var percent = Math.Round(item.Value * 100, 2, MidpointRounding.ToEven);
+            <tr>
+                <td>
+                    @item.Key.GameName
+                </td>
+                <td>
+                    @item.Key.Price
+                </td>
+                <td>
+                    @percent %
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,102 @@
+﻿@page
+@model Tupla_Web_Store.Pages.Org.IndexModel
+@using System.Globalization
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+@if (Model.CompanyStatus != null)
+{
+    <div class="alert alert-info">@Model.CompanyStatus</div>
+}
+<div class="row">
+    <div class="col-xl-9">
+        <h2>Your published games</h2>
+        <hr />
+        @if (Model.piclist.Any())
+        {
+            foreach (var item in Model.piclist)
+            {
+                <div class="row pb-1">
+                    <div class="col-xl-2">
+                        <!--Image for game-->
+                        <img class="rounded img-fluid" src="@item.Value" asp-append-version="true"
+                             style="width:100%;max-height:60px" />
+                    </div>
+                    <div class="col-xl-4 my-auto">
+                        @Html.DisplayFor(modelItem => item.Key.GameName)
+                    </div>
+                    <div class="col-xl-2 btn-group my-auto">
+                        <!--Manipulate price-->
+                        -%<!--Discount in here-->
+                        @Html.DisplayFor(modelItem => item.Key.Price)
+                    </div>
+                    <div class="btn-group col-xl-4  my-auto">
+                        <a class="btn btn-secondary" asp-page="./RegisterDiscount" asp-route-gameid="@item.Key.GameId">Discount</a>
+                        <a class="btn btn-primary" asp-page="./Editgame" asp-route-id="@item.Key.GameId">Edit</a>
+                        <a class="btn btn-danger" asp-page="./Deletegame" asp-route-id="@item.Key.GameId">Delete</a>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p class="col-xl-12">There is none.</p>
+        }
+        <hr />
+        <div class="flex-grow-1">
+            <a class="btn btn-success col-xl-12" asp-page="./Addgame">
+                <i class="fas fa-plus"></i>
+            </a>
+        </div>
+    </div>
+    <div class="col-xl-3">
+        <!--Image for company profile-->
+        <img class="rounded-circle img-fluid" src="@Model.imgDisplay" asp-append-version="true"
+             style="width:100%;max-width:255px;height:255px" />
+        <br /><br />
+        <h2>@Html.DisplayFor(model => model.Company.company_name)</h2>
+        <hr />
+        <h4>Details</h4>
+        <dl class="row">
+            <dt class="col-xl-4">
+                @Html.DisplayNameFor(model => model.Company.company_address)
+            </dt>
+            <dd class="col-xl-8">
+                @Html.DisplayFor(model => model.Company.company_address)
+            </dd>
+            <dt class="col-xl-4">
+                @Html.DisplayNameFor(model => model.Company.bank_name)
+            </dt>
+            <dd class="col-xl-8">
+                @Html.DisplayFor(model => model.Company.bank_name)
+            </dd>
+            <dt class="col-xl-4">
+                @Html.DisplayNameFor(model => model.Company.bank_account)
+            </dt>
+            <dd class="col-xl-8">
+                @Html.DisplayFor(model => model.Company.bank_account)
+            </dd>
+            <dt class="col-xl-4">
+                @Html.DisplayNameFor(model => model.Company.company_country)
+            </dt>
+            <dd class="col-xl-8">
+                @Html.DisplayFor(model => model.Company.company_country)
+            </dd>
+            <dt class="col-xl-4">
+                @Html.DisplayNameFor(model => model.Company.company_zipcode)
+            </dt>
+            <dd class="col-xl-8">
+                @Html.DisplayFor(model => model.Company.company_zipcode)
+            </dd>
+            <dt class="col-xl-4">
+                @Html.DisplayNameFor(model => model.Company.company_create_date)
+            </dt>
+            <dd class="col-xl-8">
+                @Html.DisplayFor(model => model.Company.company_create_date)
+            </dd>
+        </dl>
+        <a class="col-xl-12 btn btn-outline-info" asp-page="./Edit">Edit</a>
+    </div>
+</div>
+

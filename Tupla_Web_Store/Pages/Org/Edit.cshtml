@@ -1,0 +1,85 @@
+﻿@page
+@model Tupla_Web_Store.Pages.Org.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('.img-fluid.profile')
+                    .attr('src', e.target.result);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+
+<h1>Edit</h1>
+
+<h4>Company</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group custom-file">
+                <img class="img-fluid profile" src="@Model.imgDisplay" asp-append-version="true"
+                     width="397" height="224" />
+                <input asp-for="@Model.Imgfile" onchange="readURL(this)"
+                       class="form-control-file" asp-append-version="true"
+                       accept="image/*" />
+            </div>
+            <br /><br />
+            <input type="hidden" asp-for="Company.companyId" />
+            <div class="form-group">
+                <label asp-for="Company.company_name" class="control-label"></label>
+                <input asp-for="Company.company_name" class="form-control" />
+                <span asp-validation-for="Company.company_name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Company.company_address" class="control-label"></label>
+                <input asp-for="Company.company_address" class="form-control" />
+                <span asp-validation-for="Company.company_address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Company.bank_name" class="control-label"></label>
+                <input asp-for="Company.bank_name" class="form-control" />
+                <span asp-validation-for="Company.bank_name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Company.bank_account" class="control-label"></label>
+                <input asp-for="Company.bank_account" class="form-control" />
+                <span asp-validation-for="Company.bank_account" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Company.company_country" class="control-label"></label>
+                <input asp-for="Company.company_country" class="form-control" />
+                <span asp-validation-for="Company.company_country" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Company.company_zipcode" class="control-label"></label>
+                <input asp-for="Company.company_zipcode" class="form-control" />
+                <span asp-validation-for="Company.company_zipcode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a class="flex-grow-1 btn btn-primary" asp-page="./Index">Back to home</a>
+    <a class="btn btn-danger" asp-page="./Delete">Delete</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
